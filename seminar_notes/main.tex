@@ -508,14 +508,119 @@ Now that we have come up so far, lets try to relate the number in the queue with
 }
 \nt{This result can be interpreted in simple way. The average waiting, $\bar{T}$, is the amount of time a customer is expected to wait once it arrives at the queue and until it leaves after being serviced. Moreover, $\lambda$ is the mean number of arrivals per unit time. Thus, in the time that a customer is in a queue, is likely to see $\lambda \bar{T}$ customers on an average.}
 
-% \dfn{Limit of Sequence in }{Let be a sequence in}
+\chapter{Other Queues}
 
-% \qs{}{Is the set a closed set}
-% \sol We have to take its complement and check whether that set is a open set i.e. if it is a union of open balls
-% \nt{We will do topology in Normed Linear Space  (Mainly  and occasionally)using the language of Metric Space}
-% \clm{Topology}{}{Topology is cool}
-% \ex{Open Set and Close Set}{}
+\section{Limitations of $M/M/1$ model}
+While the previous queueing model was friendly enough that we could derive the nice results that we got, it isn't all that realistic. Recollect the assumptions that we made prior to embarking on the derivations. One of them was that the coin tosses that decide whether there is an arrival or not are independent and thus uncorrelated. However, how realistic is this assumption? 
 
+Consider the case of a call center. In my experience at least, I have hardly ever got any resolution on my first call. What I mean is that once you make a call to a place, it is quite likely that you will call again. That means that the calls are not completely uncorrelated. However, this assumption is ok to make for a first-order analysis.
+
+Next assumption that we made was that the queue could in theory grow limitlessly. This is quite impossible simply due to availability of limited resources and not to mention the patience one would require to stand in an infinite human queue. Hence, for next part of our analysis we consider a model with finite buffer length.
+
+After this analysis, we ask why to limit our system to a single server queue? After all, the efficiency lies in parallelism. Thus, we consider the cases of `m' servers and a special case where $m = \infty$.
+
+The analysis in the following sections will be similar to the previous ones and will heavily borrow from those sections. We request, that you are comfortable and up-to-speed on the concepts covered so far.
+
+\section{$M/M/1/N$ - Finite Buffer Queue}
+
+In this model, the queue size is limited to $N$. If there are $N$ customers in the queue, including one in the server, then any new arrivals are turnew away or dropped. To maintain the independence of arrivals, we further assume that the dropped customers do not arrive again. 
+
+Due to the finite states we get a new state transition diagram shown in Fig.\ref{fig:mm1N_std}.
+\begin{figure}
+    \centering
+    \input{diagrams/mm1N.tex}
+    \caption{State transition diagram for $M/M/1/N$ queue.}
+    \label{fig:mm1N_std}
+\end{figure}
+
+Recollecting the local balance equations, we have under equilibrium,
+\begin{subequations}
+    \begin{align}
+        p_n &= (\frac{\lambda}{\nu})^n p_0 =\rho^n p_0. 
+    \end{align}
+    Unlike previous model however, $0 \leq n \leq N$.
+    Thus, to satisfy the axioms of probability, we must have,
+    \begin{align}
+        p_0 + p_1 + \dots + p_N &= 1 \\
+        \implies p_0 + \rho p_0 + \rho^2 p_0 + \dots + \rho^N p_0 &= 1 \\
+        p_0 (1 + \rho + \rho^2 + \dots + \rho ^N) &= 1 \\
+        p_0 (\frac{1 - \rho ^ {N +1}}{1 - \rho}) &= 1 \\
+        \therefore p_0 &= \frac{1 - \rho}{1 - \rho ^ {N + 1}} 
+    \end{align} 
+    Substituting in {3.1a}, for $0 \leq n \leq N$,
+    \begin{align}
+        p_n = \big(\frac{1 - \rho}{1 - \rho ^ {N + 1}}\big) \rho ^ n.
+    \end{align}
+    \label{eq:mm1n_eq}
+\end{subequations}
+
+\dfn{Blocking Probability}{
+    The blocking probability is the probability that the queue buffer is full, i.e., $P_N(t)$. Using the derived equations, Blocking Probability is $\frac{(1-\rho)}{(1 - \rho^{N+1})} \rho^N$.
+}
+\nt{
+    Using the blocking probability, we can find the mean number of customers turned away per unit time as $\lambda P_N(t)$.
+}
+
+\qs{What is $p_n$ when $\lambda / \mu = 1$?}{
+    \sl{
+        At $\lambda / \mu = 1$, $p_n$ assumes a $0/0$ form. We use L' Hopital's rule.
+        \begin{align}
+            \lim_{\rho \rightarrow 1} p_n &= lim_{\rho \rightarrow 1} \frac{1 - \rho}{1 - \rho^{N + 1}}\rho^n \\
+            &= \lim_{\rho \rightarrow 1} \frac{-1}{-(N + 1)\rho^N}\\
+            &= \frac{1}{N + 1}. 
+        \end{align}
+        }      
+}
+
+\nt{
+    In this case, since the buffer size is limited, we can have $\lambda > \mu$ as the excess arrivals will simply be turned down or blocked. 
+}
+
+\begin{figure}
+    % First subfigure: Branching Diagram
+    \begin{subfigure}[b]{0.55\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{plots/blockProb_Nfix.pdf}
+        \caption{Blocking probability as a function of $\rho$ ($N$ fixed).}
+        \label{fig:blkprob_N}
+    \end{subfigure}
+    \hfill
+    % Second subfigure: Merging Diagram
+    \begin{subfigure}[b]{0.55\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{plots/blockProb_rhofix.pdf}
+        \caption{Blocking probability as a function of $N$ ($\rho$ fixed).}
+        \label{fig:blkprob_rho}
+    \end{subfigure}
+    \label{fig:blk_prob}
+\end{figure}
+
+We plot the blocking probabilities in Fig.\ref{fig:blkprob_N} and \ref{fig:blkprob_rho}. It concurs with our intuition that the blocking probability increases with increasing utilization ($\rho$) and decreases with increasing buffer length, $N$.
+
+\section{$M/M/\infty$ - Infinite servers}
+
+Now, we move on to the case of multiple server models. However, to warm, it is easier to consider the infinite server case as we will soon see. The setup we now have to work with is such that every arriving customer is assigned a personal server of rate $\mu$. Since, we have infinite servers, we don't mind it if the queue size increases limitlessly. 
+
+\nt{
+    If the system has $n$ customers at a time instant, as a whole the system has an aggregate output rate of $n\mu$. 
+}
+\begin{figure}[ht]
+    
+    \begin{subfigure}[b]{0.55\textwidth}
+        \centering
+        \input{diagrams/mminfinite_blk.tex}
+        \caption{Flow diagram of an $M/M/\infty$ queue.}
+        \label{fig:blk_mminfinite}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.55\textwidth}
+        \centering
+        \input{diagrams/mminfinite_std.tex}
+        \caption{Flow diagram of an $M/M/\infty$ queue.}
+        \label{fig:std_mminfinite}
+    \end{subfigure}
+    \label{fig:mminfinite_dig}
+\end{figure}
 \chapter{Appendix}
 Only the bare minimum concepts have been covered here. I strongly advise that you go through the relevant material in \cite{pishro2014introduction}
 \section{Random Processes}
@@ -528,3 +633,10 @@ If the indexing variable is continuous, we refer to the process as a continuous-
 \bibliographystyle{plain}
 
 \end{document}
+% \dfn{Limit of Sequence in }{Let be a sequence in}
+
+% \qs{}{Is the set a closed set}
+% \sol We have to take its complement and check whether that set is a open set i.e. if it is a union of open balls
+% \nt{We will do topology in Normed Linear Space  (Mainly  and occasionally)using the language of Metric Space}
+% \clm{Topology}{}{Topology is cool}
+% \ex{Open Set and Close Set}{}
