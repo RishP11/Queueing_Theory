@@ -1,0 +1,22 @@
+\begin{tikzpicture}[>=stealth, node distance=2.5cm,every node/.style={circle}]
+    % Nodes
+    \node (0) [draw, fill=gray!20, minimum size=15mm] {0};
+    \node (1) [right of=0, draw, fill=gray!20, minimum size=15mm] {1};
+    \node (2) [right of=1, draw, fill=gray!20, minimum size=15mm] {2};
+
+    % Infinite continuation
+    \node (ellipsis) [right of=2, xshift=1.5cm] {\dots};
+
+    % Connecting nodes with edges and labels as plain text
+    \path[->] (0) edge [bend left] node[above] {$\lambda \delta t$} (1)
+              (1) edge [bend left] node[above] {$\lambda \delta t$} (2)
+              ;
+
+    \path[->] (1) edge [bend left] node[below] {$\mu \delta t$} (0)
+    (2) edge [bend left] node[below] {$\mu \delta t$} (1)
+    ;
+
+
+    % Ellipses for continuation
+    \node at ($(2)!0.5!(ellipsis)$) {\dots};
+\end{tikzpicture}
