@@ -604,8 +604,7 @@ Now, we move on to the case of multiple server models. However, to warm, it is e
 \nt{
     If the system has $n$ customers at a time instant, as a whole the system has an aggregate output rate of $n\mu$. 
 }
-\begin{figure}[ht]
-    
+\begin{figure}[ht]   
     \begin{subfigure}[b]{0.55\textwidth}
         \centering
         \input{diagrams/mminfinite_blk.tex}
@@ -616,11 +615,111 @@ Now, we move on to the case of multiple server models. However, to warm, it is e
     \begin{subfigure}[b]{0.55\textwidth}
         \centering
         \input{diagrams/mminfinite_std.tex}
-        \caption{Flow diagram of an $M/M/\infty$ queue.}
+        \caption{State transition diagram of an $M/M/\infty$ queue.}
         \label{fig:std_mminfinite}
     \end{subfigure}
     \label{fig:mminfinite_dig}
 \end{figure}
+Using this setup, and refering to the state transition diagram shown in Fig.\ref{fig:std_mminfinite}, we get the below local balance equations.
+\begin{subequations}
+    \begin{align}
+        \lambda p_0 &= \mu p_1  &&\implies p_1 = (\lambda / \mu) p_0 \\
+        \lambda p_1 &= 2\mu p_2  &&\implies p_2 = (\lambda / 2\mu) p_1 \\
+        \lambda p_2 &= 3\mu p_2  &&\implies p_3 = (\lambda / 3\mu) p_2 \\
+    \end{align}
+    Generalising, we get,
+    \begin{align}
+        p_n &= (\lambda / n \mu) p_{n-1} \\
+        &= (\lambda / n \mu) (\lambda / (n - 1) \mu)  p_{n-2} \\
+        \vdots \\
+        &= \frac{\lambda ^ n}{n! \mu ^ n}p_0 
+    \end{align}
+    Since the probabilities must sum to 1, 
+    \begin{align}
+        p_0 + \frac{\lambda}{\mu} p_0 + \frac{\lambda^2}{2! \mu^2} p_0 + \frac{\lambda^3}{3!\mu^3} p_0 + \dots &= 1 \\
+        \implies p_0(1 + \frac{\lambda}{\mu} +  \frac{\lambda^2}{2! \mu^2} + \frac{\lambda^3}{3!\mu^3} + \dots) &= 1 \\
+        \implies p_0 (1 + \sum_{n=1}^{\infty} \frac{1}{n!}(\frac{\lambda}{\mu})^n) &= 1 \\
+        \implies p_0 \times e^{\lambda / \mu} &= 1 &&\quad\ \ldots\ \text{Taylor series expansion of} e^x.
+    \end{align}
+    In summary, we thus have,
+    \begin{align}
+        p_0 &= e^{ - \lambda / \mu} \\
+        p_n &= \frac{1}{n!}(\frac{\lambda}{\nu})^n e^{-\lambda / \mu} 
+    \end{align}
+    Defining $\rho = \lambda  / \mu$,
+    \begin{align}
+        p_n &= \frac{\rho^n}{n!} e^{-\rho}\\
+        \therefore N &\sim \text{Poisson}(\rho)
+    \end{align}
+    \label{eq:mminfinite_eqs}
+\end{subequations}
+
+\section{$M/M/m$ - $m$ Parallel servers with a queue}
+
+\begin{figure}[ht]   
+        \centering
+        \input{diagrams/mmm_blk.tex}
+        \caption{Flow diagram of an $M/M/m$ queue.}
+    \label{fig:mmm_blk}
+\end{figure}
+\begin{figure}[ht]   
+    \centering
+    \input{diagrams/mmm_std.tex}
+    \caption{State transition diagram of an $M/M/m$ queue.}
+\label{fig:mmm_std}
+\end{figure}
+Now we a realistic assumption and consider a model with only $m$ parallel servers. This results in a flow diagram, shown in Fig.\ref{fig:mmm_blk} and state transition diagram, shown in Fig.\ref{fig:mmm_std} . 
+The transition rates are given in this case as,
+\begin{align}
+    \lambda(n) &= \lambda\ &&\quad\ , n=0, 1, 2, \ldots. \\
+    \mu(n) &= n \mu\ &&\quad\ , n=1, 2,\ldots, m - 1. \\
+    \mu(n) &= m \mu\ &&\quad\ , n=m, m+1, m+2,\ldots.   
+\end{align}
+Using these rates, we get the following balance equations,
+\begin{subequations}
+    \begin{align}
+        p_1 &= (\lambda / \mu) p_0 \\
+        p_2 &= (\lambda / 2 \mu) p_1 &&= (\lambda^2 / 2 \mu^2) p_0 \\
+        p_3 &= (\lambda / 3 \mu) p_2 &&= (\lambda^3 / 3! \mu^3) p_0 \\
+        \vdots \\
+        p_m &= (\lambda / m \mu) p_{m-1} &&= (\lambda^m / m! \mu^m) p_0 \\
+        p_{m+1} &= (\lambda / m \mu) p_m &&= (\lambda^{m+1} / m m! \mu^{m+1}) p_0 \\
+        p_{m+2} &= (\lambda / m \mu) p_{m+1} &&= (\lambda^{m+2} / m^2 m! \mu^{m+2}) p_0 \\
+        \vdots
+    \end{align}
+    \label{eq:mmm_eqs}    
+    Generalising, we can write in short as,
+    \begin{align}
+        p_n &= \frac{\lambda^n}{n! \mu^n}\ &&\quad\ ,1 \leq n < m \\
+        &= \frac{\lambda^n}{m^{n-m} m! \mu^n} p_0\ &&\quad\ ,n \geq m.  
+    \end{align}
+    Using the axioms of probability,
+    \begin{align}
+        \sum_{n=0}^{\infty} p_n &= 1\\
+        \sum_{n=0}^{m-1} p_n + \sum_{n=m}^{\infty} p_n &= 1 \\ 
+        p_0 \big(1 + \sum_{n=1}^{m-1} \frac{1}{n!} (\frac{\lambda}{\mu})^n + \sum_{n=m}^{\infty} \frac{1}{m^{n-m}} \frac{1}{m!} (\frac{\lambda}{\mu})^n
+        \big) &= 1 \\
+        \therefore p_0 &= \big[1 + \sum_{n=1}^{m-1} \frac{1}{n!} (\frac{\lambda}{\mu})^n + \sum_{n=m}^{\infty} \frac{1}{m^{n-m}} \frac{1}{m!} (\frac{\lambda}{\mu})^n
+        \big] ^ {-1}. 
+    \end{align}
+\end{subequations}
+Thus, we can find other state probabilities in equilibrium. One important probability that we can consider is the probability of the event that there will be a queue. There will be a queue whenever, all of the $m$ servers are busy and there are arrivals.
+\qs{What is the queueing probability in an $M/M/m$ queue?}{
+    \sol{
+        \begin{align}
+            \sP(\text{queueing}) &= \sP(n \geq m) \\
+            &= \sum_{n=m}^{\infty} p_n \\
+            &= \sum_{n=m}^{\infty} \frac{1}{m^{n-m}}\frac{1}{m!}(\frac{\lambda}{\mu})^n p_0 \\
+            &= \frac{1}{m!}(\frac{\lambda}{\mu})^m \sum_{n=0}^{\infty}(\frac{\lambda}{m \mu})^n p_0\\
+            &= \frac{1}{m!}(\frac{\lambda}{\mu})^m (\frac{1}{1 - \frac{\lambda}{m \mu}})p_0
+         \end{align}
+        Letting $\rho \coloneq \frac{\lambda}{m\mu}$,
+        \begin{align}
+            \sP(\text{queueing}) = \frac{1}{m!} (\frac{\lambda}{\mu})^m \frac{1}{1-\rho} p_0
+        \end{align}
+    }
+}
+
 \chapter{Appendix}
 Only the bare minimum concepts have been covered here. I strongly advise that you go through the relevant material in \cite{pishro2014introduction}
 \section{Random Processes}
