@@ -1,0 +1,145 @@
+\documentclass{article}
+\usepackage[landscape]{geometry}
+\usepackage{url}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing,shadings} % Include the shadings library
+
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{mathtools}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+
+\title{Basics of Queueing Theory}
+\usepackage[utf8]{inputenc}
+
+\advance\topmargin-.8in
+\advance\textheight3in
+\advance\textwidth3in
+\advance\oddsidemargin-1.5in
+\advance\evensidemargin-1.5in
+\parindent0pt
+\parskip2pt
+\newcommand{\hr}{\centerline{\rule{3.5in}{1pt}}}
+
+% Define colors sampled from the magma colormap
+\definecolor{magma1}{rgb}{0.001462, 0.000466, 0.013866}
+\definecolor{magma2}{rgb}{0.316654, 0.07169, 0.48538}
+\definecolor{magma3}{rgb}{0.716387, 0.214982, 0.47529}
+\definecolor{magma4}{rgb}{0.9867, 0.535582, 0.38221}
+\definecolor{magma5}{rgb}{0.987053, 0.991438, 0.749504}
+
+\begin{document}
+
+\begin{center}{\huge{\textbf{Basics of Queueing Theory}}}\\
+{\large By Rishabh Pomaje}
+\end{center}
+\begin{multicols*}{2}
+
+% Define the custom magma gradient shading
+\tikzstyle{mybox} = [draw=black, fill=white, very thick,
+    rectangle, rounded corners, inner sep=10pt, inner ysep=10pt]
+\tikzstyle{fancytitle} = [
+    shade,
+    left color=magma2,
+    right color=magma4,
+    text=white,
+    font=\bfseries
+]
+
+%------------ CONTEÚDO CAIXA RANDOM ---------------
+\begin{tikzpicture}
+\node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth}
+        1. Assumptions:
+        \begin{enumerate}
+            \item The arrivals are Poisson random process with rate $\lambda$.
+            \item The service times are Exponentially distributed with rate $\mu\ (> \lambda)$.
+            \item There is a single server with no limit on the queue size.
+        \end{enumerate}
+        2. The distribution of the state at time $t$ is given by,
+    \end{minipage}
+};
+%------------ CAIXA RANDOM ---------------------
+\node[fancytitle, right=10pt] at (box.north west) {$M/M/1$ Queue};
+\end{tikzpicture}
+
+%------------ CONTEÚDO CAIXA MatPlotLib ---------------
+\begin{tikzpicture}
+\node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth}
+        Para usar a biblioteca MatPlotLib, comece importando estes módulos Python: \\
+        \\
+        \textit{import numpy as np} \\
+        \textit{import pandas as pd} \\
+        \textit{from pandas import DataFrame, Series} \\
+        \textit{import matplotlib.pyplot as plt} \\
+        \textit{import matplotlib} \\
+        \\
+        {\bf Pyplot} é uma coleção de funções no estilo de comandos que fazem a biblioteca matplotlib funcionar como o MatLab. Cada função pyplot faz alguma alteração na plotagem do gráfico.
+    \end{minipage}
+};
+%------------ CAIXA PRELIMINARES ---------------------
+\node[fancytitle, right=10pt] at (box.north west) {$M/M/1/N$ Queue};
+\end{tikzpicture}
+
+% Add other TikZ boxes as needed...
+\begin{tikzpicture}
+    \node [mybox] (box){%
+        \begin{minipage}{0.3\textwidth}
+            Para usar a biblioteca MatPlotLib, comece importando estes módulos Python: \\
+            \\
+            \textit{import numpy as np} \\
+            \textit{import pandas as pd} \\
+            \textit{from pandas import DataFrame, Series} \\
+            \textit{import matplotlib.pyplot as plt} \\
+            \textit{import matplotlib} \\
+            \\
+            {\bf Pyplot} é uma coleção de funções no estilo de comandos que fazem a biblioteca matplotlib funcionar como o MatLab. Cada função pyplot faz alguma alteração na plotagem do gráfico.
+        \end{minipage}
+    };
+    %------------ CAIXA PRELIMINARES ---------------------
+    \node[fancytitle, right=10pt] at (box.north west) {$M/M/\infty$ Queue};
+    \end{tikzpicture}
+
+    \begin{tikzpicture}
+        \node [mybox] (box){%
+            \begin{minipage}{0.3\textwidth}
+                Para usar a biblioteca MatPlotLib, comece importando estes módulos Python: \\
+                \\
+                \textit{import numpy as np} \\
+                \textit{import pandas as pd} \\
+                \textit{from pandas import DataFrame, Series} \\
+                \textit{import matplotlib.pyplot as plt} \\
+                \textit{import matplotlib} \\
+                \\
+                {\bf Pyplot} é uma coleção de funções no estilo de comandos que fazem a biblioteca matplotlib funcionar como o MatLab. Cada função pyplot faz alguma alteração na plotagem do gráfico.
+            \end{minipage}
+        };
+        %------------ CAIXA PRELIMINARES ---------------------
+        \node[fancytitle, right=10pt] at (box.north west) {$M/M/m$ Queue};
+        \end{tikzpicture}
+
+        \begin{tikzpicture}
+            \node [mybox] (box){%
+                \begin{minipage}{0.3\textwidth}
+                    Para usar a biblioteca MatPlotLib, comece importando estes módulos Python: \\
+                    \\
+                    \textit{import numpy as np} \\
+                    \textit{import pandas as pd} \\
+                    \textit{from pandas import DataFrame, Series} \\
+                    \textit{import matplotlib.pyplot as plt} \\
+                    \textit{import matplotlib} \\
+                    \\
+                    {\bf Pyplot} é uma coleção de funções no estilo de comandos que fazem a biblioteca matplotlib funcionar como o MatLab. Cada função pyplot faz alguma alteração na plotagem do gráfico.
+                \end{minipage}
+            };
+            %------------ CAIXA PRELIMINARES ---------------------
+            \node[fancytitle, right=10pt] at (box.north west) {$M/G/1$ Queue};
+            \end{tikzpicture}
+
+\end{multicols*}
+\end{document}
