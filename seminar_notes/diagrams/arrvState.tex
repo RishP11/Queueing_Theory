@@ -8,14 +8,14 @@
     \node (ellipsis) [right of=2, xshift=1.5cm] {\dots};
 
     % Connecting nodes with edges and labels as plain text
-    \path[->] (0) edge [bend left] node[above] {$\lambda \delta t$} (1)
-              (1) edge [bend left] node[above] {$\lambda \delta t$} (2)
+    \path[->] (0) edge [bend left] node[above] {$\lambda$} (1)
+              (1) edge [bend left] node[above] {$\lambda$} (2)
               ;
 
     % Self-loops with labels as plain text
-    \path[->] (0) edge [loop below] node[below] {$1 - \lambda \delta t$} (0)
-              (1) edge [loop below] node[below] {$1 - \lambda \delta t$} (1)
-              (2) edge [loop below] node[below] {$1 - \lambda \delta t$} (2);
+    \path[->] (0) edge [loop below] node[below] {$1 - \lambda $} (0)
+              (1) edge [loop below] node[below] {$1 - \lambda$} (1)
+              (2) edge [loop below] node[below] {$1 - \lambda $} (2);
 
     % Ellipses for continuation
     \node at ($(2)!0.5!(ellipsis)$) {\dots};

@@ -37,48 +37,62 @@
 \pagebreak
 
 \chapter{Motivation and Background}
-Queues arise in nature by the virtue of there being limitations on the quantity and efficiency of resources. At first glance, the study of queues may seem unremarkable. I mean, have you ever looked forward to waiting in any kind of line? However, we will adopt an intuitive approach to make the subject engaging while ensuring we cover the rigorous mathematical details, which often provide valuable insights. Ready? Let's begin...
+Queues arise in nature by the virtue of limited quantity and efficiency of resources being available. At the first glance, the study of queues may seem unremarkable. I mean, have you ever looked forward to waiting in any kind of line? However, we will adopt an intuitive approach to make the subject engaging while ensuring we cover the rigorous mathematical details, which often provide valuable insights. Ready? Let's begin...
 
 \section{Queueing Theory}
 
-I like the statement made in \cite{RobertazziQ}, that Queueing Theory is the discipline that conducts \emph{Study of Waiting}. What? I hear you ask. Whats there to study about waiting? Let me again assure you, a lot. Just to show how often scenarios arise where we have to wait, recollect the instances when you waited hours at the bank just to get your passbook updated or the ATM to get some cash. What about the long queues at the shopping center. We can also go beyond human queues. All of us use a plethora of networks on a day to day basis. The most familiar network is one associated with WiFi. All of our devices, smartphones, laptops, PCs, and now a days even TVs, refrigerators, and wrist watches connect to it. By it, I mean the router. When wanting to communicate to some other device in some other locations, these devices are essentially lining up in a queue at the router waiting for their work, in this case their data to be processed. Hence, we see that queues are ubiquitous. We just have to look for them!  
+I like the statement made in \cite{RobertazziQ}, that Queueing Theory is the \emph{Study of Waiting}. What? I hear you ask. What's there to study about waiting? Let me assure you, a lot. Just to show how often scenarios arise where we have to wait, recall the instances when you waited hours at the bank just to get your passbook updated or at an ATM to get some cash. What about the long queues at the shopping center? We can also go beyond human queues. All of us use a plethora of networks on a day-to-day basis. The most familiar is Wi-Fi. All of our devices—smartphones, laptops, PCs, and nowadays even TVs, refrigerators, and wristwatches—connect to it. When wanting to communicate with another device in some other location, these devices are essentially lining up in a queue at the router, waiting for their work—in this case, their data—to be processed. Then there are queues formed by interrupts and faults in electrical systems, especially those with an operating system or real-time computing systems. We see that queues are ubiquitous. We just have to look for them!  
+
+\section{Modeling}
+An immediate question that might arise is: what is there to model in a queue? The arrivals in a queue are spaced in time, and these intervals often appear random to us. Moreover, the demand that each arrival places on the "server" is also of random size. Therefore, we can model the stochastic nature of arrival times and service requirements using probability distributions.
+
+Modeling a queueing system, as it is commonly known, can provide valuable insights that help us make informed decisions about resource planning and allocation, ultimately optimizing the output of a system. Later, we will provide examples of how some basic statistics can be used in practice.
 
 \section{Groundwork}
-Now we will start by making a few things concrete. The entities forming a queue vary depending on the application area. For a service based company like banks, it will be humans, for a computer scientist, it might be   `jobs' at a server. Similarly, in telecommunications context, it will be number of calls or packets of data. The number of objects in a queue at a given time will form a reference for us. 
+Now we will start by making a few definitions and concepts concrete. 
+
+\begin{figure}
+    \centering
+    \input{diagrams/simpleQblk.tex}
+    \caption{Block diagram of a simple, 1-D queue with one server and infinite capacity.}
+    \label{fig:simpleQblk}
+\end{figure}
 
 \subsection{Block diagram}
-To visualize a queue we will use a depiction shown below.
-    \begin{figure}
-        \centering
-        \input{diagrams/simpleQblk.tex}
-        \label{fig:simpleQblk}
-        \caption{Block diagram of a simple, 1-D queue with one server and infinite capacity.}
-    \end{figure}
+A queue is frequently depicted in literature as shown in Fig.\ref{fig:simpleQblk}.
 
 \subsection{Terminology}
-The above block diagram has a few terms used in it. A queue is formed by entities. What these entities are depends on the context provided by the application of the theory. For example, it could be jobs waiting to be executed at a server in a data center, or it could be humans waiting at a bank, or it could even be calls lined up at a call center. To address the requirements of the entity, the requirements again depend on the situation, there is an object we call a server. This server might be the processor, or the bank manager or the router.
+The Fig.\ref{fig:simpleQblk} has a few terms used in it.  A queue is formed by entities, the nature of which depends on the context provided by the application of the theory. For example, it could be jobs waiting to be executed at a server in a data center, humans waiting at a bank, or airplanes at an airport awaiting takeoff. To address the requirements of the entities, there is an object we call a server. This server might be the processor, the bank manager, or the air traffic controller, respectively, in the aforementioned queues.
 
-Whenever a new entity is added to the queue, we call it as an arrival event. When the server addresses an entity, we call the event a departure event. In these notes we will refer to the entities in the queues as either arrivals or customers.
+Whenever a new entity is added to the queue, we say that an arrival has occurred. When the server addresses an entity, we say that a departure event has occurred. In these notes, we will refer to the entities in the queues as either arrivals or customers.
 
-The state of the queue at any time instant is given by the number of customers at that time instant. Diagramatically, we will be using a state diagram quite frequently and hope that the reader is comfortable with it. If not, it is recommended that you refer \cite{pishro2014introduction}. 
+The state of the queue at any given instant is defined by the number of customers at that moment. This includes those waiting in the queue for their turn at the server, as well as the one currently being served by the server. We will be using a state diagram quite frequently and hope that the reader is comfortable with it. If not, it is recommended that you refer to the relevant chapters in \cite{pishro2014introduction}.
+
+\subsection{Assumptions}
+To make our life easy we make a few seemingly trivial yet important assumptions \cite{myReference}:
+\begin{enumerate}
+    \item If a server is free, an arriving customer directly goes into service. If a server is not free, the customer waits in the queue waiting for its turn at the server. 
+    \item When a server becomes free, the next customer is chosen according to a \emph{scheduling policy}.
+    \item Customers remain in the ``queueing facility'' once they have been accepted in it and do not become impatient and leave.
+\end{enumerate}
 
 \subsection{Kendall Notation}
-A queue is characterized by how entities arrive to it, how they depart from it, how many servers are present, and if existant, what is the maximum length of the queue limited to.
-
-\emph{Kendall's Notation} provides a condensed way to denote a queue. The general form is given by 
+A queue is characterized by how entities arrive to it, how they depart from it, how many servers are present, and if existant, what is the maximum length of the queue limited to, etc. \emph{Kendall's Notation} provides a condensed way to represent a queue. The general form is given by 
 \begin{subequations}
     \begin{align}
-        \mX / \mY / x / y 
+        \mA/ \mB/ c/ \mX/ \mY/ \mZ 
     \end{align}
     where, 
     \begin{align*}
-        \mX &= \text{Describes arrival statistics.}\\
-        \mY &= \text{Describes the departure statistics.} \\
-        x &= \text{Number of Servers.}\\
-        y &= \text{Maximum length of the queue.} 
+        \mA &= \text{Describes arrival statistics.}\\
+        \mB &= \text{Describes the departure statistics.} \\
+        c &= \text{Number of Servers.}\\
+        \mX &= \text{Maximum length of the queue, more commonly known as \emph{system capacity}.}\\
+        \mY &= \text{Size of the customer population}. \\
+        \mZ &= \text{Queue scheduling discipline.}
     \end{align*}
 \end{subequations}
-A frequently used statistics is \emph{Markovian}, where the process(es) of arrival and/or departure are Markov. `M' is used to abbreviate a Markovian statistics, `D' to denote Deterministic Timing, `G' for general statistics and `Geom' for Geometric. 
+A frequently used statistics is \emph{Markovian}, where the process(es) of arrival and/or departure are Markov. `M' is used to abbreviate a Markovian statistics, `D' to denote Deterministic Timing, `E' for Erlang,`G' for general statistics and `Geom' for Geometric. 
 
 \subsection{Assumptions}
 
@@ -91,43 +105,57 @@ For our purposes of analysis, we make the following assumptions:
 Also, for simplicity, we will be sticking to a first-order analysis, thus, trading modeling accuracy for tractability and thereby insights.
 
 \section{Service Discipline}
-One thing we haven't addressed is the order in which the customers in a queue are called for service. One obvious rule is \emph{First Come First Serve} (FCFS) also known as \emph{First-In-First-Out} (FIFO). However, there arise scenarios where different disciplines are implemented. For example,  in case of mobile communication networks, emergency notifications regarding disasters must be prioritized over all other messages. Thus, in this case, the system might follow \emph{Last-In-First-Out-Pre-Emptive-Resume} (LIFOPR). For those working with embedded systems or computer architecture may be familiar with `memory stack' which is used to manage interrupts. In this case, the order in which different routines are serviced depends on the priorities of the interrupts in addition to the order in which they are triggered. For our purposes, we keep it simple and limit to FIFO service discipline.     
+One thing we haven't addressed so far, is the order in which the customers in a queue are called for service. 
+\dfn{Scheduling Discipline}{
+    The rule that decides which customer in the queue will be serviced after a departure is known as the scheduling discipline.
+
+    This rule is also referred to as the scheduling algorithm or scheduling policy in the literature.
+}
+One obvious rule is First Come First Serve (FCFS), also known as First-In-First-Out (FIFO). However, there are scenarios where different disciplines are implemented. For example, in mobile communication networks, emergency notifications regarding disasters must be prioritized over all other messages. In this case, the system might follow Last-In-First-Out-Pre-Emptive-Resume (LIFOPR). Readers associated with embedded systems or computer architecture may be familiar with the ``memory stack'' which is used to manage interrupts or function calls. In this case, the order in which different routines are serviced depends on the priorities of the interrupts, in addition to the order in which they are triggered (LIFO is the most commonly used discipline).
+
+For our purposes, we will keep it simple and limit ourselves to the FIFO service discipline. Now will look at a few queues with models that provide feasible and tractable mathematical models.
 
 \chapter{M/M/1 Queue}
-In this chapter, we will study the simplest kind of queue, the $M/M/1$ or also known as \emph{Markovian} queue. While the queue, once we get to its details may not seem realistic, it does provide valuable insights due to its mathematical tractability.
+In this chapter, we will study the simplest kind of queue, the $M/M/1$ or also known as \emph{Markovian} queue. While the queue, once we delve into its details, may not seem entirely realistic, it provides valuable insights due to its mathematical tractability.
 
 \dfn{M/M/1 (or Markovian) Queue}{
     A $M/M/1$ queue, also known as \emph{Markovian} queue is characterized as follows:
     \begin{enumerate}
-        \item The arrival process is a Poisson Random process.
-        \item There is a single server with the serving times being exponentially distributed. 
-        \item There is no limit on the size of the queue. Also, the state of the queue is given by the number of arrivals/ customers in the queue at a given moment.
+        \item The arrival process follows a Poisson random process.
+        \item There is a single server, with the service times for each customer being independent and exponentially distributed. 
+        \item There is no limit on the size of the queue. Additionally, the state of the queue is given by the number of arrivals/customers in the queue at a given moment.
     \end{enumerate}  
 }
 
-Let's understand this queue slowly, one thing at a time.
+Its our first queue under study, let's understand this queue slowly, building the model step by step.
 
 \section{Arrivals}
-By definition, the arrivals in an $M/M/1$ queue are a Poisson random process. If you are not familiar, its okay, since we will derive the entire framework from basic probability and a little bit of imagination.
+By definition, the arrivals in an $M/M/1$ queue are a Poisson random process. If you are not familiar, its okay, since we will derive the entire framework from basic probability and a little bit of imagination. However, you may refer \cite{pishro2014introduction} for more details.
 
-Consider an experiment. You are watching a queue and tracking its movement. For ease, you divide the time axis into smaller intervals of length $\delta t$ such that there can atmost be a single arrival or no arrival. What decides whether there is a arrival or not? You toss a magical coin that is weirdly biased. If a toss results in heads, there is an arrival at the queue, else there is no arrival. The bias of the coin to land on its heads is proportional to the time interval i.e., $\delta t$. Thus, $\sP$(Heads) $ = \lambda \times \delta t$. 
-If we consider an interval of length $T$, the number of slots $n \approx T / \delta t $. The experiment then reduces to $n$ coin flips with a coin with bias $\lambda \delta t$. 
+\subsection{Poisson Random Arrival Process}
+Consider an experiment where you are observing a queue and tracking its movement. For simplicity, you divide the time axis into smaller intervals of length $\delta t$, such that at most one arrival can occur within each interval, or there may be no arrival at all. What decides whether there is an arrival or not? You toss a magical coin that is weirdly biased. If the toss results in heads, there is an arrival at the queue; otherwise, there is no arrival. The bias of the coin landing on heads is proportional to the length of the time interval, i.e., 
+$$\mathbb{P}(\text{Heads}) = \lambda \times \delta t,$$ 
+where $\lambda$ is a constant. Now, if we consider an interval of length $T$, the number of slots (or small $\delta t$ intervals) within that time interval is approximately, 
+$$n \approx \frac{T}{\delta t}.$$ 
+Therefore, the experiment reduces to $n$ coin flips, each with a bias of $\lambda \delta t$. 
 
 The state of the system is given by the number of customers in the queue, $N(t)$ at some time instant $t$. From the coin analogy, we see that $N(t) \sim \text{Binomial}(n, p=\lambda\delta t)$
 \begin{align}
     P_{N(t)}(k) &= \sP(N(t) = k) = \sP(\text{k arrivals in the interval [0, t]}) \\
     &= {n \choose k} (\lambda \delta t)^{k} (1 - \lambda \delta t)^{n-k} 
 \end{align} 
-Taking limit as $\delta t   \rightarrow 0$ and $\delta t \approx t / n$
+Taking limit as $\delta t   \rightarrow 0$ and $\delta t \approx t / n$ (this implies that $n \rightarrow \infty$),
 \begin{align}
-    \lim_{\delta t \rightarrow 0} P_{N(t)}(k) &= \lim_{\delta t \rightarrow 0}\frac{n!}{k! (n-k)!} \frac{\lambda^{k} t^{k}}{n^k} (1 - \frac{\lambda t}{n})^{n-k} \\
-    &= \lim_{n \rightarrow \infty}\frac{n\times n-1 \times n-2 \times \dots \times n-(k-1)}{k!} \frac{\lambda^{k} t^{k}}{n^k} (1 - \frac{\lambda t}{n})^{n-k}\\
-    &= \frac{1}{k!}\lim_{n \rightarrow \infty}(n/n\times (n-1)/n \times (n-2)/n \times \dots \times (n-(k-1))/n){\lambda^{k} t^{k}} (1 - \frac{\lambda t}{n})^{n-k}\\
-    &= \frac{1}{k!}\lim_{n \rightarrow \infty}(1\times (1-1/n) \times (1-2/n) \times \dots \times (1-(k-1)/n)) \times{\lambda^{k} t^{k}} (1 - \frac{\lambda t}{n})^{n-k}\\
-    &= \frac{\lambda^{k} t^{k}}{k!}\lim_{n \rightarrow \infty} (1 - \frac{\lambda t}{n})^{n-k}\\ 
-    &= \frac{\lambda^{k} t^{k}}{k!}\lim_{n \rightarrow \infty} (1 - \frac{\lambda t}{n})^{n} \\
+    \lim_{\delta t \rightarrow 0} P_{N(t)}(k) &= \lim_{\delta t \rightarrow 0} \frac{n!}{k! (n-k)!} \frac{\lambda^{k} t^{k}}{n^k} \left( 1 - \frac{\lambda t}{n} \right)^{n-k} \\
+    &= \lim_{n \rightarrow \infty} \frac{n \times (n-1) \times (n-2) \times \dots \times (n-(k-1))}{k!} \frac{\lambda^{k} t^{k}}{n^k} \left( 1 - \frac{\lambda t}{n} \right)^{n-k} \\
+    &= \frac{1}{k!} \lim_{n \rightarrow \infty} \left( \frac{n}{n} \times \frac{n-1}{n} \times \frac{n-2}{n} \times \dots \times \frac{n-(k-1)}{n} \right) \lambda^{k} t^{k} \left( 1 - \frac{\lambda t}{n} \right)^{n-k} \\
+    &= \frac{1}{k!} \lim_{n \rightarrow \infty} \left( 1 \times \left( 1 - \frac{1}{n} \right) \times \left( 1 - \frac{2}{n} \right) \times \dots \times \left( 1 - \frac{k-1}{n} \right) \right) \lambda^{k} t^{k} \left( 1 - \frac{\lambda t}{n} \right)^{n-k} \\
+    &= \frac{\lambda^{k} t^{k}}{k!} \lim_{n \rightarrow \infty} \left( 1 - \frac{\lambda t}{n} \right)^{n-k} \\
+    &= \frac{\lambda^{k} t^{k}}{k!} \lim_{n \rightarrow \infty} \left( 1 - \frac{\lambda t}{n} \right)^{n} \\
     &= \frac{\lambda^{k} t^{k}}{k!} e^{-\lambda t}
 \end{align}
+
+
 Thus, we get the result, 
 \begin{align}
     P_{N(t)}(k) \sim \text{Poisson}(\lambda t) 
@@ -142,55 +170,13 @@ Lets make a few observations.
         \\
         P_{N(\delta t)}(1) &= \lambda \delta t e^{-\lambda \delta t} \\ 
         &= \lambda \delta t (1 - \lambda \delta t) \\
-        &= \lambda \delta t \\
+        &= \lambda \delta t\ &&\quad\ \ldots\text{Ignoring higher order terms.}\\
         \\
         P_{N(t)}(k \geq 1) &\approx 0
     \end{align}    
     \label{eq:ApproxAssumptions}
 \end{subequations}
 Thus, we see that in the small interval $\delta t$, there is at most one arrival with probability of $\lambda \delta t$. Also there cannot be more than one arrival in the small interval.
-
-\qs{What does the proportionality constant $\lambda$ signify?}{
-    Consider the average number of arrivals per unit time i.e., 
-    \begin{subequations}
-        \begin{align}
-            \bar{N} &= \frac{1}{t} \ExpVal[N(t)] \\
-            \bar{N} &= \frac{1}{t} \sum_{k = 0}^{\infty} k P_{N(t)}(k) \\
-            &= \frac{1}{t}\lambda t \\
-            &= \lambda 
-        \end{align}
-    \end{subequations}
-Hence, $\lambda$ is the rate of arrivals or mean arrivals per unit time. 
-}
-\nt{The Poisson random process has \emph{independent increments} and \emph{stationary increments}. }
-
-Modeling a queue using such statistics has a fair share of advantages. Other than mathematically easy calculations, it is useful that splitting (thinning) and aggregation of Posson random processes results in other Poisson random processes.
-
-\dfn{Splitting (Thinning) of Possion Process}{
-Consider a parent Poisson Random process with rate $\lambda$. Then, if the arrivals in this processes ar e split into n different children with probabilities $p_1, p_2, \dots, p_n$, then the result is $n$ Poisson processes with rates $\lambda p_1, \lambda p_2, \dots, \lambda p_n$. Note that we must have $\sum p_i = 1$. See Fig.\ref{fig:split}.
-}
-\begin{figure}
-    % First subfigure: Branching Diagram
-    \begin{subfigure}[b]{0.45\textwidth}
-        \centering
-        \input{diagrams/splitting.tex}
-        \caption{Splitting (Thinning of Poisson Process)}
-        \label{fig:split}
-    \end{subfigure}
-    \hfill
-    % Second subfigure: Merging Diagram
-    \begin{subfigure}[b]{0.45\textwidth}
-        \centering
-        \input{diagrams/merging.tex}
-        \caption{Merging of Poisson Process}
-        \label{fig:merging}
-    \end{subfigure}
-    \label{fig:splitMerge}
-\end{figure}
-
-\dfn{Merging of Poisson Process}{
-    Let $N_1(t)$ and $N_2(t)$ be two Poisson processes with rates $\lambda_1$ and $\lambda_2$ respectively. Then, the process $N(t)$ defined as $N(t) = N_1(t) + N_2(t)$ is also a Poisson random process with rate $\lambda_1 + \lambda_2$. See Fig.\ref{fig:merging}.
-}
 
 \subsection{State of the System - Alternative approach}
 I would like to emphasize again that we are still considering only the arrivals and the state of the system is given by the number of customers in the system at a paticular time.
@@ -224,7 +210,7 @@ Thus, we arrive at a recursive equation. However, we still need a starting (boun
     \begin{align}
         \frac{d P_0(t)}{d t} = -\lambda P_0(t)
     \end{align} 
-    Now those that are comfortable and in habit of working with differential equations may solve the above equation by visual inspection. Others may verify the solution by plugging the alleged function in the differential equation and verify that it satisfies the same. The solution is,
+    Now, those who are comfortable with and accustomed to working with differential equations may solve the above equation by visual inspection. Others may verify the solution by plugging the alleged function into the differential equation and checking that it satisfies the equation. The solution is,
     \begin{align}
         P_0(t) = e^{-\lambda t}
     \end{align} 
@@ -234,33 +220,52 @@ Thus, we arrive at a recursive equation. However, we still need a starting (boun
         \frac{d P_1(t)}{d t} &= \lambda P_1(t) + \lambda e ^{-\lambda t} \\
         P_1(t) &= \lambda t e^{-\lambda t}
     \end{align}
-    Recognizing a pattern, we can generalize the result without explicit proof as,
+    Recognizing a pattern, we can generalize the result without explicit proof (provided by induction in \cite{myReference}) as,
     \begin{align}
         P_n(t) = \frac{(\lambda t)^n}{n!} e^{-\lambda t}
     \end{align}
 \end{subequations}
+Thus, we reach the same result that we derived in the previous section. The difference is that we started from two different, yet equivalent, definitions of the Poisson random process.
+
+\nt{The Poisson random process has \emph{independent increments} and \emph{stationary increments}\cite{pishro2014introduction}. This, means that the number of arrivals in two disjoint time intervals are independent and the associated statistics are time-invariant, i.e., they depend only on the length of the interval.}
+
+Modeling a queue using such statistics has a fair share of advantages. Other than easy mathematical derivations, it is useful that splitting (thinning) and aggregation of Poisson random processes results in other independent Poisson random processes. See the appendix if you are unfamiliar with splitting and merging of Poisson random processes. 
 
 \qs{\cite{RobertazziQ}}{If a telephone exchange is known to receive 100 calls a minute on average, what is the probability, that it gets 0 calls in 5 seconds.\\
 \sol 0.00024.}
 
-\subsection{Mean arrivals in an interval $[0, t]$}
+Now that we have the distribution of the state of the queue, we can find a few statistics that might help us in making decisions. We begin by finding the mean number of customers in the queue, denoted by $\bar{N}$.
+
+\subsection{Mean number of arrivals in an interval $[0, t]$}
 \begin{subequations}
     \begin{align}
-        \bar{N} &= \ExpVal[N(t)] \\
+        \bar{N}(t) &= \ExpVal[N(t)] \\
         &= \sum_{n=0}^{\infty} n P_n(t) \\
         &= \sum_{n=0}^{\infty} n \times \frac{(\lambda t)^n}{n!} e^{-\lambda t} \\
         &= e^{-\lambda t} (\lambda t) \sum_{n=1}^{\infty} \frac{(\lambda t)^{n-1}}{(n-1)!} \\
         &= e^{-\lambda t} (\lambda t) \sum_{n=0}^{\infty} \frac{(\lambda t)^n}{n!} \\
         &=  e^{-\lambda t} (\lambda t) e^{\lambda t} &&\quad\ \ldots\ \text{Taylor Series expansion of }e^x.\\
-        \therefore \bar{N} &= \lambda t
+        \therefore \bar{N}(t) &= \lambda t
     \end{align}
     \label{eq:Meanarr}
 \end{subequations}
 
 \nt{
-- The results obtained is intuitively satisfactory since it states that on an average, the number of customers in a queue is proportional to the time interval of interest and the proportionality constant is given by the arrivals per unit time.
+    - The result obtained is intuitively satisfactory, since it states that, on average, the number of customers in a queue is proportional to the time interval of interest.
+    Let us now see what this proportionality constant means.
+}
 
-- This statistic can be used by a call center to determine a rough estimate of employees it may require to handle the calls.
+\qs{What does the proportionality constant $\lambda$ signify?}{
+    \sol{Consider the average number of arrivals per unit time i.e., 
+    \begin{subequations}
+        \begin{align}
+            \bar{N} &= \frac{1}{t} \ExpVal[N(t)] \\
+            \bar{N} &= \frac{1}{t} \sum_{k = 0}^{\infty} k P_{N(t)}(k) \\
+            &= \frac{1}{t}\lambda t \\
+            &= \lambda 
+        \end{align}
+    \end{subequations}
+Hence, $\lambda$ is the rate of arrivals or mean arrivals per unit time.} 
 }
 
 \subsection{Variance of Number of arrivals in an interval $
@@ -284,42 +289,41 @@ Consider,
 \end{subequations}
 
 \subsection{Inter-arrival times}
-\dfn{Interarrival Time}{The time elasped between two consecutive arrival events is called the Interarrival time between those two events. Note that this quantity is a random quantity due to our setup.}
-Let $T$ denote the interarrival time. Thus, 
+
+\dfn{Interarrival Time}{
+    The time elasped between two consecutive arrival events is called the Inter-arrival time between those two events. Note that this is a stochastic quantity in our model.
+}
+Let $T$ denote the interarrival time. Thus we begin by finding the cumulative distribution function (CDF) of $T$, 
 \begin{subequations}
     \begin{align}
-        F_P(t) = \sP(T < t) &= \sP(\text{Interarrival time is less than} t) \\
-        &= 1 - \sP(\text{Interarrival time is more than} t) \\
-        &= 1 - \sP(\text{No arrival in time interval of length} t) \\
+        F_T(t) = \sP(T \leq t) &= \sP(\text{Interarrival time is less than or equal to } t) \\
+        &= 1 - \sP(\text{Interarrival time is more than } t) \\
+        &= 1 - \sP(\text{No arrival in time interval of length } t) \\
         &= 1 - P_0(t) \\
         &= 1 - e^{-\lambda t}  
     \end{align}
-    We recognize this CDF as that of an Exponentially distributed random variable. If not, we can get the PDF by differentiating as, 
+    We recognize this CDF as that of an \emph{exponentially} distributed random variable. If you don't, we can get the PDF (which hopefully you will be more familiar with) by differentiating as, 
     \begin{align}
         f_T(t) = \frac{d F_T(t)}{dt} = \lambda e^{-\lambda t}
     \end{align}
     Thus, the interarrival time $T$ is distributed as 
     \begin{align}
-        T \sim \text{Exponential}(\lambda)
+        T \sim \text{Exponential}(\lambda).
     \end{align}
     \label{eq:intertime}
 \end{subequations}
 Now's a good time to make some observations.
 \nt{
     \begin{enumerate}
-    \item The interarrival times are exponentially distributed meaning that the system memoryless. Intuitively, the current state of the system does not depend on the past. More concretely, say $\lambda = 10 $ min and we have had no arrival for 6 mins. Then the time after which we expect an arrival is still 10 mins and not 4 mins! Meaning it is as good as starting a new observation window. I recommend you to go through the proof of memorylessness property of Exponential distribution.
-    \item Due to this, the state of the system at an instant is completely determined by the number of customers in the queue at that instant, there is no conditional dependence on the past.
-    \item Discrete distribution with memoryless property is the Geometric distribution.  
-\end{enumerate}
-}
-\qs{Where might we use this statistic?}{
-    In a call center a worker could estimate the time between the calls he would receive. Then he can plan the next coffee break and how much he can converse with a colleague.
+        \item The inter-arrival times are exponentially distributed, meaning that the system is memoryless (see \cite{pishro2014introduction}). Intuitively, the current state of the system does not depend on the past. More concretely, say $\lambda = 10$ min, and we have had no arrival for 6 minutes since we started observing. Then, the time after which we expect an arrival is still 10 minutes from now, not 4 minutes! This means it is as if we are starting a new observation window. I recommend that you go through the proof of the memorylessness property of the exponential distribution in \cite{pishro2014introduction}, as it is quite simple.
+        \item Due to this, the state of the system at any given instant is completely determined by the number of customers in the queue at that instant; there is no conditional dependence on the past.
+        \item A discrete distribution with the memoryless property is the Geometric distribution.
+    \end{enumerate}
     
-    More seriously, this statistic is important when it comes to scheduling other low priority tasks in a micro-processor or micro-controller based systems.
 }
 
 \section{Service}
-We have ignored the poor server for a long time. Let's include him in our model now. In our $M/M/1$ model, we make the assumption that the service times for every customer are independent and identically distributed Exponential random variables with some rate $\mu$.
+We have ignored the server for a long time. Let's include it in our model now. In our $M/M/1$ model, we make the assumption that the service times for every customer are independent and identically distributed exponential random variables with rate $\mu$.
 
 Thus, we make the following assumptions in addition to our previous ones.
 \begin{subequations}
@@ -332,7 +336,7 @@ Thus, we make the following assumptions in addition to our previous ones.
 \end{subequations}
 Now the state of the system will be given by the number of customers in the queue as well as the one in service. 
 
-The process resulting from such a system is called a \emph{birth-death} process in the literature.\cite{RobertazziQ, myReference}. The state transition diagram can be now updated to include the departures as well. See Fig.\ref{fig:mm1_std}. 
+The process resulting from such a system is called a \emph{birth-death} process in the literature\cite{RobertazziQ, myReference}. The state transition diagram can be now updated to include the departures as well. See Fig.\ref{fig:mm1_std}. 
 \begin{figure}
     \centering
     \input{diagrams/mm1_state.tex}
@@ -341,7 +345,8 @@ The process resulting from such a system is called a \emph{birth-death} process 
 \end{figure}
 
 \subsection{State of the System}
-Using the previous notation and differential equation approach, we now include the possiblity of a departure as well. Remember, we can jump only between adjacent states in $\delta t$. Also, we can either stay at zero to be in state 0 or depart from state 1.
+Using the previous notation and the differential equation approach, we now include the possibility of a departure as well. Remember, we can only jump between adjacent states in a single $\delta t$ interval. Also, when we are in state 0, we can either stay in state 0 or depart to state 1.
+Thus, we get the equations,
 \begin{subequations}
     \begin{align}
         P_n(t + \delta t) &= P_n(t) p_{n, n} + P_{n-1}(t)p_{n-1, n} + P_{n+1}(t) p_{n+1, n} \\
@@ -361,72 +366,99 @@ Using the previous notation and differential equation approach, we now include t
     \end{align}  
     \label{eq:stateMM1}
 \end{subequations}
-\nt{Higher order terms have been neglected. Also, We cannot have a departure in state 0.}
-Similar to previous derivations, we get the following equations:
+\nt{Higher order terms have been neglected for a first order analysis. Also, we cannot have a departure in state 0.}
+Similar to the previous derivations, we obtain
+ the following differential equations:
 \begin{subequations}
     \begin{align}
         \frac{d P_n(t)}{d t} &= -(\lambda + \mu) P_n(t) + \lambda P_{n-1}(t) + \mu P_{n+1}(t) \\
-        \frac{d P_0(t)}{d t} &= -\lambda P_0(t) + \mu P_{}(t) 
+        \frac{d P_0(t)}{d t} &= -\lambda P_0(t) + \mu P_{1}(t) 
     \end{align}
 \end{subequations}
-Solving these equations can be arduous. Thus, \cite{RobertazziQ} defines a new quantity. Let's see how this will come to our aid.
-\dfn{Probability Flux}{
+Solving these equations can be arduous especially for the transient phase of the system i.e., when the state probabilities have not settled or become \emph{stationary}. For a first-cut analysis we are satisfied with the stationary probabilities or the state probabilities when the system has reached equilibrium.
+
+\dfn{Probability Flux \cite{RobertazziQ}}{
     Probability Flux is defined as the product of the probability of being in the state at which a transition originates and the transition rate to which the state travels next.
 }
-When the system is in equilibrium, we can say that the probability flux into a state equals the probability flux out of the state. This is called flow balancing and leads to what are known as local(global) balancing equations.
+Probability flux can be understood better if we make an analogy. However, beware that the following analogy is only a loose one and does not extrapolate to other results. We can relate a node in the state transition diagram to a node in an electrical circuit. Just as Kirchhoff's Circuit Law states that the current into a node must equal the current out of it, similarly, the flow of transitions into a node of a state transition diagram must equal the flow out of it.
 
-When in equilibrium we assume that $\frac{d P_n(t)}{t} = 0$
-Thus, we get the following ``local balance equations'',
+For those not yet convinced, lets just go by the definition of Probability flux. Take a node say node 1 in Fig.\ref{fig:mm1_std}. If we add the probability fluxes together with the signs representing the direction, we get,
+\begin{align}
+    \Phi_P(\text{node}\ 1) &= \text{Flow out of node } 1 + \text{Flow into node } 1\\
+    &= -(\lambda + \mu) p_1 + \lambda p_0 + \mu p_2
+\end{align}
+If you observe carefully, this is the right-hand side of Eq. (2.20a) for $n = 1$. So, if we are at equilibrium, we expect that the state probabilities be time-invariant, i.e., $\frac{dp_n(t)}{dt} = 0$. Thus, we can use these to form recursive equations for the state probabilities at equilibrium and obtain the stationary distribution.
+
+In conclusion, when the system is in equilibrium, the probability flux into a state equals the probability flux out of the state. This is called flow balancing and leads to what are known as the local (global) balancing equations.
+
+Going back to our queue model, we get the following ``local balance equations'',
 \begin{subequations}
     \begin{align}
-        \lambda p_0 &= \mu p_1 &&\quad \implies p_1 = (\lambda / \mu) p_0 \\
-        \lambda p_1 &= \mu p_2 &&\quad \implies p_2 = (\lambda / \mu) p_1 \\
+        \lambda p_0 &= \mu p_1 &&\quad \implies p_1 = \frac{\lambda}{\mu} p_0 \\ 
+        \lambda p_1 &= \mu p_2 &&\quad \implies p_2 = \frac{\lambda}{\mu} p_1 \\
         \vdots \\
-        \lambda p_{n-1} &= \mu p_n &&\quad \implies p_{n-1} = (\lambda / \mu) p_n \\
+        \lambda p_{n-1} &= \mu p_n &&\quad \implies p_n = \frac{\lambda}{\mu} p_{n-1} \\
         \vdots \\
     \end{align}
     Thus, we get the equation,
     \begin{align}
-        p_n = (\lambda / \mu)^n p_0
+        p_n = \left(\frac{\lambda}{\mu}\right)^n p_0
     \end{align}
     \label{eq:lclBal}
 \end{subequations}
-Since the system must be in atleast one the possible states, the axioms of probability give us another equation, 
+Since the system must be in at least one of the possible states, the axioms of probability give us another equation:
 \begin{align}
-    \sum_{i=0}^{num_{states}} p_i = 1.
+    \sum_{i=0}^{\text{num}_{\text{states}}} p_i = 1.
 \end{align}
-Defining $\rho = \lambda / \mu$ for our $M/M/1$ with infinite states, we get,
+Defining $\rho = \frac{\lambda}{\mu}$ for our $M/M/1$ system with an infinite number of states, we get:
 \begin{align}
-    p_0 + \rho p_0 + \rho^ 2 p_0 + \ldots &= 1 \\
+    p_0 + \rho p_0 + \rho^2 p_0 + \ldots &= 1 \\
     \therefore p_0 &= \frac{1}{\sum_{i=0}^{\infty} \rho^i}
 \end{align}
 
-Consider the case when $0 \leq \rho < 1$,
+Consider the case when $0 \leq \rho < 1$:
 \begin{align}
     p_0 &= \frac{1}{\frac{1}{1 - \rho}} \\
     &= 1 - \rho.
 \end{align}
-\nt{Since $p_0$ is the probability that the queue is empty or unutilized, we call $\rho$ Utilization. When $\lambda$ is close to 0, we say we have very light load or zero load. Alternatively, if $\lambda \rightarrow \mu$, we say we have heavy load.}
+
+\nt{Since $p_0$ is the probability that the queue is empty or unutilized, we call $\rho$ utilization. When $\lambda$ is close to 0, we say we have a very light load or zero load. Alternatively, if $\lambda \rightarrow \mu$, we say we have a heavy load.}
 
 \qs{Is it possible that $\rho > 1$?}{
     \sol{
-        No. From the above derivation we see that the length of the queue will balloon up and blow up to be infinite in size. Hence, the system will not reach equilibrium, invalidating our above assumptions.
+        No (atleast for reaching equilibrium). From the above derivation we see that the length of the queue will balloon up and blow up to be infinite in size. Hence, the system will not reach equilibrium, invalidating our above assumptions.
+    }
+}
+
+\dfn{Utilization}{
+    In a single server system, Utilization is defined as the fraction of time the server is busy.
+
+    In case of multiple servers, we Utilization as the average fraction of available servers that are busy.   
+}
+
+\qs{What is utilization for $M/M/1$ queue? Is it always the same?}{
+    \sol{
+        Consider a time interval of length $T$. Then the mean arrivals in this time interval will be $\lambda T$. The server serves at an average rate of $\mu$ per unit time. Thus, the amount of time the server will be busy is given by $\lambda T / \mu$.
+        Normalizing to find the fraction of time the server is busy, 
+        Utilization $ = \frac{1}{T} (\lambda T / \mu) = \lambda / \mu$ which is why $\rho$ is also called utilization.
+
+        In some cases, where customers are denied access to the queue due to a finite buffer size, the utilization is not exactly $\rho$, but slightly less than it, as there are fewer than $\lambda$ mean arrivals due to excess customers being dropped.
     }
 }
 
 \subsection{Average number of customers in $M/M/1$ queue}
 
-We will now use the updated distribution.
+We will now use the updated distribution (for steady state) that includes the service time distribution as well.
 \begin{subequations}
     \begin{align}
-        \bar{N} = \ExpVal[N(t)] &= \sum_{n=0}^{\infty} n P_n(t) \\
+        \bar{N} = \mathbb{E}[N] &= \sum_{n=0}^{\infty} n p_n \\
         &= \sum_{n=0}^{\infty} n \rho^n p_0 \\
         &= (1 - \rho) \sum_{n=0}^{\infty} n \rho^n \\
-        &= \rho (1 - \rho) \sum_{n=0}^{\infty} n \rho^{n-1}\\
+        &= \rho (1 - \rho) \sum_{n=0}^{\infty} n \rho^{n-1} \\
         &= \rho (1 - \rho) \sum_{n=0}^{\infty} \frac{d \rho^n}{d \rho} \\
-        &= \rho (1 - \rho) \frac{d\sum_{n=0}^{\infty}  \rho^n}{d \rho} \\
-        &= \rho(1 - \rho) \frac{d 1/(1-\rho)}{d \rho} \\
-        &= \frac{\rho}{1-\rho}
+        &= \rho (1 - \rho) \frac{d}{d \rho} \left( \sum_{n=0}^{\infty}  \rho^n \right) \\
+        &= \rho(1 - \rho) \frac{d}{d \rho} \left( \frac{1}{1 - \rho} \right) \\
+        &= \frac{\rho}{1 - \rho}
     \end{align}
     \label{eq:avgMM1}
 \end{subequations}
@@ -440,7 +472,7 @@ Consider,
         &= (1 - \rho) \big[\sum_{n=0}^{\infty} n(n+1)\rho^n - \sum_{n=0}^{\infty}n\rho^n\big] \\
         &= (1 - \rho) \big[\rho^2 \sum_{n=0}^{\infty} n(n+1)\rho^{n-1} - \rho\sum_{n=0}^{\infty}n\rho^{n-1}\big] \\
         &= (1 - \rho) \big[\rho^2 \sum_{n=0}^{\infty} \frac{d^2\rho^{n+1}}{d\rho^2} - \rho\sum_{n=0}^{\infty}\frac{d\rho^{n}}{d \rho}\big] \\
-        &= (1 - \rho) \big[\rho^2 \frac{d^2 \big(\sum_{n=1}^{\infty} \rho^n \big)}{d\rho^2} - \rho \frac{d \big(\sum_{n=0}^{\infty} \rho^n \big)}{d\rho}\big]
+        &= (1 - \rho) \big[\rho^2 \frac{d^2 \big(\sum_{n=0}^{\infty} \rho^n \big)}{d\rho^2} - \rho \frac{d \big(\sum_{n=0}^{\infty} \rho^n \big)}{d\rho}\big]
     \end{align}
     Using the formula for sum of Geometric Progression (for common ratio $< 1$),
     \begin{align}
@@ -473,8 +505,19 @@ Consider,
 
 Please see Figs.\ref{fig:avgMM1_plot} and \ref{fig:varMM1_plot}. Note how the statistics blow up as the Utilization factor approaches 1.
 
+\qs{Where might we use these statistics?}{
+    
+    \sol{
+        As I promised, we will take an approach that will make things clear intuitively. What better way than using a real-life example?
+
+        In a call center, a clever worker who is a queueing theory aficionado could estimate the time between the calls he receives. This would allow him to plan his next coffee break and decide how much time he can spend conversing with a colleague.
+        
+        More seriously, these statistics are important when it comes to scheduling other regular, low-priority tasks in microprocessor- or microcontroller-based systems. They can be used to plan resources as well. A hospital might decided whether or not a doctor needs an associate. A internet service provider might decide whether or not his infrastucture needs an upgrade.         
+        }
+}
+
 \section{Little's Law}
-Now that we have come up so far, lets try to relate the number in the queue with the time dimension.
+Now that we have come so far, lets try to relate the number in the queue with the time dimension.
 \thm{Little's Law}{The mean number of customers in the queue, $\bar{N}$ is related to the rate of arrivals, $\lambda$, and the mean service time, $\bar{T}$ as 
 \[
 \bar{N} = \lambda \bar{T}.
@@ -486,9 +529,9 @@ Now that we have come up so far, lets try to relate the number in the queue with
         \begin{align}
             &\sP(\text{n customers in the queue after one departure})  \\ 
             &= \sP(\text{n customers arrive during the time spent in the queue by the depart customer.}) \\
-            &= \int_{0}^{\infty}\sP(\text{n arrivals in during the interval} [0, T]\ |\ T=t) f_T(t) dt \\
-            &= \int_{0}^{\infty}\sP(\text{n arrivals in during the interval} [0, t]) f_T(t) dt  \\
-            &= \int_{0}^{\infty} \frac{(\lambda t)^n}{n!} e^{-\lambda} f_T(t) dt 
+            &= \int_{0}^{\infty}\sP(\text{n arrivals in during the interval } [0, T]\ |\ T=t) f_T(t) dt \\
+            &= \int_{0}^{\infty}\sP(\text{n arrivals in during the interval } [0, t]) f_T(t) dt  \\
+            &= \int_{0}^{\infty} \frac{(\lambda t)^n}{n!} e^{-\lambda t} f_T(t) dt 
         \end{align}
         Now, using formula for expectation of a discrete random variable,
         \begin{align}
@@ -499,7 +542,7 @@ Now that we have come up so far, lets try to relate the number in the queue with
             &= \int_{0}^{\infty} \sum_{n=1}^{\infty} \lambda t \frac{(\lambda t)^{n-1}}{(n-1)!} e^{-\lambda t} f_T(t) dt \\
             &= \int_{0}^{\infty} \lambda t e^{-\lambda t} f_T(t) \sum_{n=0}^{\infty} \frac{(\lambda t)^n}{n!} dt \\
             &= \int_{0}^{\infty} \lambda t e^{-\lambda t} e^{\lambda t} f_T(t) dt &&\quad\ \ldots\ \text{Taylor series expansion of } e^x. \\ 
-            &= \lambda \int_{0}^{\infty} t f_T(T) dt \\
+            &= \lambda \int_{0}^{\infty} t f_T(t) dt \\
             &= \lambda \ExpVal[T] \\
             &= \lambda \bar{T}.
         \end{align} 
@@ -508,24 +551,58 @@ Now that we have come up so far, lets try to relate the number in the queue with
 }
 \nt{This result can be interpreted in simple way. The average waiting, $\bar{T}$, is the amount of time a customer is expected to wait once it arrives at the queue and until it leaves after being serviced. Moreover, $\lambda$ is the mean number of arrivals per unit time. Thus, in the time that a customer is in a queue, is likely to see $\lambda \bar{T}$ customers on an average.}
 
+With this result, we will conclude our study on $M/M/1$ queue. We end with a summary
+
+\section{Summary}
+\begin{center}    
+    \begin{tabular}{|c|c|}
+        \hline
+        Random Variable & Distribution \\
+        \hline
+        \hline
+        Number of arrivals in interval (0, t] & $\text{Poisson}(\lambda t)$ \\
+        \hline
+        Inter-arrival times & $\text{Exponential}(\lambda)$ \\
+        \hline 
+        Number of departures in the interval (0, t] & $\text{Poisson}(\mu t)$ \\
+        \hline
+        Inter-departure times & $\text{Exponential}(\mu)$ \\
+        \hline
+    \end{tabular}
+\end{center}
+At equilibrium, $\lambda < \mu$, 
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline 
+        State Probabilities & $p_0 = 1 - \rho$ \\
+        & $p_n = \rho^n p_0$ \\
+        \hline
+        Average number of customers in the queue & $\rho / (1 - \rho)$ \\
+        \hline
+        Variance of number of customers in the queue & $\rho / (1 - \rho)^2$ \\
+        \hline
+    \end{tabular}
+\end{center}
+
 \chapter{Other Queues}
 
 \section{Limitations of $M/M/1$ model}
-While the previous queueing model was friendly enough that we could derive the nice results that we got, it isn't all that realistic. Recollect the assumptions that we made prior to embarking on the derivations. One of them was that the coin tosses that decide whether there is an arrival or not are independent and thus uncorrelated. However, how realistic is this assumption? 
+While the previous queueing model was simple enough that we could derive the nice results we obtained, it isn't quite realistic. Recall the assumptions we made before embarking on the derivations. One of them was that the coin tosses, which decide whether there is an arrival or not, are independent and thus uncorrelated. However, how realistic is this assumption?
 
-Consider the case of a call center. In my experience at least, I have hardly ever got any resolution on my first call. What I mean is that once you make a call to a place, it is quite likely that you will call again. That means that the calls are not completely uncorrelated. However, this assumption is ok to make for a first-order analysis.
+Consider the case of a call center. In my experience, at least, I have hardly ever received any resolution on my first call. What I mean is that once you make a call to a place, it is quite likely that you will call again. This means that the calls are not completely uncorrelated. However, this assumption is acceptable for a first-order analysis.
 
-Next assumption that we made was that the queue could in theory grow limitlessly. This is quite impossible simply due to availability of limited resources and not to mention the patience one would require to stand in an infinite human queue. Hence, for next part of our analysis we consider a model with finite buffer length.
+The next assumption we made was that the queue could, in theory, grow without bound. This is quite unrealistic, simply due to the limited availability of resources and (the doctor's waiting room can't possibly be big enough to have place for infinite patients), not to mention, the patience one would need to endure an infinite human queue. Hence, for the next part of our analysis, we consider a model with finite buffer length.
 
-After this analysis, we ask why to limit our system to a single server queue? After all, the efficiency lies in parallelism. Thus, we consider the cases of `m' servers and a special case where $m = \infty$.
+After this analysis, we ask: why limit our system to a single-server queue? After all, efficiency lies in parallelism. Nowadays, almost all the microprocessors are equipped with multiple cores, essentially multiple compute units. Thus, we consider the cases of $m$ servers and a special case where $m = \infty$.
 
-The analysis in the following sections will be similar to the previous ones and will heavily borrow from those sections. We request, that you are comfortable and up-to-speed on the concepts covered so far.
+The analysis in the following sections will be similar to the previous ones and will heavily borrow from those sections. We request that you are comfortable with, and up to speed on, the concepts covered so far.
 
 \section{$M/M/1/N$ - Finite Buffer Queue}
 
-In this model, the queue size is limited to $N$. If there are $N$ customers in the queue, including one in the server, then any new arrivals are turnew away or dropped. To maintain the independence of arrivals, we further assume that the dropped customers do not arrive again. 
+In this model, the queue size is limited to $N$. If there are $N$ customers in the queue, including one in the server, then any new arrivals are turned away or dropped. To maintain the independence of arrivals, we further assume that the dropped customers do not return.
 
-Due to the finite states we get a new state transition diagram shown in Fig.\ref{fig:mm1N_std}.
+Due to the finite states, we obtain a new state transition diagram, as shown in Fig.~\ref{fig:mm1N_std}.
+
 \begin{figure}
     \centering
     \input{diagrams/mm1N.tex}
@@ -536,9 +613,9 @@ Due to the finite states we get a new state transition diagram shown in Fig.\ref
 Recollecting the local balance equations, we have under equilibrium,
 \begin{subequations}
     \begin{align}
-        p_n &= (\frac{\lambda}{\nu})^n p_0 =\rho^n p_0. 
+        p_n &= (\frac{\lambda}{\mu})^n p_0 =\rho^n p_0. 
     \end{align}
-    Unlike previous model however, $0 \leq n \leq N$.
+    Unlike previous model however, $0 \leq n \leq N, (N < \infty)$.
     Thus, to satisfy the axioms of probability, we must have,
     \begin{align}
         p_0 + p_1 + \dots + p_N &= 1 \\
@@ -547,33 +624,34 @@ Recollecting the local balance equations, we have under equilibrium,
         p_0 (\frac{1 - \rho ^ {N +1}}{1 - \rho}) &= 1 \\
         \therefore p_0 &= \frac{1 - \rho}{1 - \rho ^ {N + 1}} 
     \end{align} 
-    Substituting in {3.1a}, for $0 \leq n \leq N$,
+    Substituting in {3.1a},
     \begin{align}
-        p_n = \big(\frac{1 - \rho}{1 - \rho ^ {N + 1}}\big) \rho ^ n.
+        p_n = \big(\frac{1 - \rho}{1 - \rho ^ {N + 1}}\big) \rho ^ n\ \quad\ \ldots\ 0\leq n \leq N.
     \end{align}
     \label{eq:mm1n_eq}
 \end{subequations}
 
 \dfn{Blocking Probability}{
-    The blocking probability is the probability that the queue buffer is full, i.e., $P_N(t)$. Using the derived equations, Blocking Probability is $\frac{(1-\rho)}{(1 - \rho^{N+1})} \rho^N$.
+    The blocking probability is the probability that the queue buffer is full, i.e., $P_N(t)$. Using the derived equations, Blocking Probability is $\frac{(1-\rho)}{(1 - \rho^{N+1})} \rho^N$ when the system is in equilibrium.
 }
 \nt{
     Using the blocking probability, we can find the mean number of customers turned away per unit time as $\lambda P_N(t)$.
 }
 
 \qs{What is $p_n$ when $\lambda / \mu = 1$?}{
-    \sl{
-        At $\lambda / \mu = 1$, $p_n$ assumes a $0/0$ form. We use L' Hopital's rule.
+    \sol{
+        When $\lambda / \mu = 1$, $p_n$ takes the form $0/0$. We apply L'Hospital's rule:
         \begin{align}
-            \lim_{\rho \rightarrow 1} p_n &= lim_{\rho \rightarrow 1} \frac{1 - \rho}{1 - \rho^{N + 1}}\rho^n \\
-            &= \lim_{\rho \rightarrow 1} \frac{-1}{-(N + 1)\rho^N}\\
-            &= \frac{1}{N + 1}. 
+            \lim_{\rho \rightarrow 1} p_n &= \lim_{\rho \rightarrow 1} \frac{1 - \rho}{1 - \rho^{N + 1}}\rho^n \\
+            &= \lim_{\rho \rightarrow 1} \frac{1 - \rho}{1 - \rho^{N + 1}} \\
+            &= \lim_{\rho \rightarrow 1} \frac{-1}{-(N + 1)\rho^N} \\
+            &= \frac{1}{N + 1}.
         \end{align}
-        }      
+    }
 }
 
 \nt{
-    In this case, since the buffer size is limited, we can have $\lambda > \mu$ as the excess arrivals will simply be turned down or blocked. 
+    In this case, since the buffer size is limited, we can have $\lambda > \mu$ as the excess arrivals will simply be turned down or blocked and the queue size will not grow without bounds. 
 }
 
 \begin{figure}
@@ -599,7 +677,7 @@ We plot the blocking probabilities in Fig.\ref{fig:blkprob_N} and \ref{fig:blkpr
 
 \section{$M/M/\infty$ - Infinite servers}
 
-Now, we move on to the case of multiple server models. However, to warm, it is easier to consider the infinite server case as we will soon see. The setup we now have to work with is such that every arriving customer is assigned a personal server of rate $\mu$. Since, we have infinite servers, we don't mind it if the queue size increases limitlessly. 
+Now, we move on to the case of multiple server models. However, to begin with, it is easier to consider the infinite server case, as we will soon see. The setup we now have is such that every arriving customer is assigned a personal server with rate $\mu$. Since we have an infinite number of servers, we don't mind if the queue size increases without bound.
 
 \nt{
     If the system has $n$ customers at a time instant, as a whole the system has an aggregate output rate of $n\mu$. 
@@ -620,38 +698,40 @@ Now, we move on to the case of multiple server models. However, to warm, it is e
     \end{subfigure}
     \label{fig:mminfinite_dig}
 \end{figure}
-Using this setup, and refering to the state transition diagram shown in Fig.\ref{fig:std_mminfinite}, we get the below local balance equations.
+Using this setup, and referring to the state transition diagram shown in Fig.~\ref{fig:std_mminfinite}, we get the following local balance equations:
 \begin{subequations}
     \begin{align}
-        \lambda p_0 &= \mu p_1  &&\implies p_1 = (\lambda / \mu) p_0 \\
-        \lambda p_1 &= 2\mu p_2  &&\implies p_2 = (\lambda / 2\mu) p_1 \\
-        \lambda p_2 &= 3\mu p_2  &&\implies p_3 = (\lambda / 3\mu) p_2 \\
+        \lambda p_0 &= \mu p_1  &&\implies p_1 = \frac{\lambda}{\mu} p_0 \\
+        \lambda p_1 &= 2\mu p_2  &&\implies p_2 = \frac{\lambda}{2\mu} p_1 \\
+        \lambda p_2 &= 3\mu p_3  &&\implies p_3 = \frac{\lambda}{3\mu} p_2 \\
     \end{align}
-    Generalising, we get,
+    Generalizing, we get:
     \begin{align}
-        p_n &= (\lambda / n \mu) p_{n-1} \\
-        &= (\lambda / n \mu) (\lambda / (n - 1) \mu)  p_{n-2} \\
+        p_n &= \frac{\lambda}{n \mu} p_{n-1} \\
+        &= \frac{\lambda}{n \mu} \cdot \frac{\lambda}{(n - 1) \mu}  p_{n-2} \\
         \vdots \\
-        &= \frac{\lambda ^ n}{n! \mu ^ n}p_0 
+        &= \frac{\lambda^n}{n! \mu^n} p_0
     \end{align}
-    Since the probabilities must sum to 1, 
-    \begin{align}
-        p_0 + \frac{\lambda}{\mu} p_0 + \frac{\lambda^2}{2! \mu^2} p_0 + \frac{\lambda^3}{3!\mu^3} p_0 + \dots &= 1 \\
-        \implies p_0(1 + \frac{\lambda}{\mu} +  \frac{\lambda^2}{2! \mu^2} + \frac{\lambda^3}{3!\mu^3} + \dots) &= 1 \\
-        \implies p_0 (1 + \sum_{n=1}^{\infty} \frac{1}{n!}(\frac{\lambda}{\mu})^n) &= 1 \\
-        \implies p_0 \times e^{\lambda / \mu} &= 1 &&\quad\ \ldots\ \text{Taylor series expansion of} e^x.
-    \end{align}
-    In summary, we thus have,
-    \begin{align}
-        p_0 &= e^{ - \lambda / \mu} \\
-        p_n &= \frac{1}{n!}(\frac{\lambda}{\nu})^n e^{-\lambda / \mu} 
-    \end{align}
-    Defining $\rho = \lambda  / \mu$,
-    \begin{align}
-        p_n &= \frac{\rho^n}{n!} e^{-\rho}\\
-        \therefore N &\sim \text{Poisson}(\rho)
-    \end{align}
-    \label{eq:mminfinite_eqs}
+Using the axioms of probability,
+\begin{align}
+    1 &= p_0 + \frac{\lambda}{\mu} p_0 + \frac{\lambda^2}{2! \mu^2} p_0 + \frac{\lambda^3}{3!\mu^3} p_0 + \dots\\
+    \implies 1 &= p_0 \left(1 + \frac{\lambda}{\mu} + \frac{\lambda^2}{2! \mu^2} + \frac{\lambda^3}{3!\mu^3} + \dots \right) \\
+    \implies 1 &= p_0 \left(1 + \sum_{n=1}^{\infty} \frac{1}{n!} \left(\frac{\lambda}{\mu}\right)^n \right) \\
+    \implies 1&= p_0 \times e^{\lambda / \mu} && \quad\ \ldots\ \text{Taylor series expansion of}\ e^x.
+\end{align}
+
+In summary,
+\begin{align}
+    p_0 &= e^{ - \lambda / \mu} \\
+    p_n &= \frac{1}{n!}\left(\frac{\lambda}{\mu}\right)^n e^{-\lambda / \mu} 
+\end{align}
+
+Defining $\rho = \frac{\lambda}{\mu}$, we get:
+\begin{align}
+    p_n &= \frac{\rho^n}{n!} e^{-\rho} \\
+    \therefore N &\sim \text{Poisson}(\rho)
+\end{align}
+\label{eq:mminfinite_eqs}
 \end{subequations}
 
 \section{$M/M/m$ - $m$ Parallel servers with a queue}
@@ -668,43 +748,43 @@ Using this setup, and refering to the state transition diagram shown in Fig.\ref
     \caption{State transition diagram of an $M/M/m$ queue.}
 \label{fig:mmm_std}
 \end{figure}
-Now we a realistic assumption and consider a model with only $m$ parallel servers. This results in a flow diagram, shown in Fig.\ref{fig:mmm_blk} and state transition diagram, shown in Fig.\ref{fig:mmm_std} . 
-The transition rates are given in this case as,
+Now, we make a realistic assumption and consider a model with only $m$ parallel servers. This results in a flow diagram, shown in Fig.\ref{fig:mmm_blk}, and a state transition diagram, shown in Fig.\ref{fig:mmm_std}. 
+
+The transition rates in this case are given by:
 \begin{align}
-    \lambda(n) &= \lambda\ &&\quad\ , n=0, 1, 2, \ldots. \\
-    \mu(n) &= n \mu\ &&\quad\ , n=1, 2,\ldots, m - 1. \\
-    \mu(n) &= m \mu\ &&\quad\ , n=m, m+1, m+2,\ldots.   
+    \lambda(n) &= \lambda, && \quad n = 0, 1, 2, \ldots, \\
+    \mu(n) &= n \mu, && \quad n = 1, 2, \ldots, m - 1, \\
+    \mu(n) &= m \mu, && \quad n = m, m+1, m+2, \ldots.   
 \end{align}
-Using these rates, we get the following balance equations,
+
+Using these rates, we get the following local balance equations,
 \begin{subequations}
     \begin{align}
-        p_1 &= (\lambda / \mu) p_0 \\
-        p_2 &= (\lambda / 2 \mu) p_1 &&= (\lambda^2 / 2 \mu^2) p_0 \\
-        p_3 &= (\lambda / 3 \mu) p_2 &&= (\lambda^3 / 3! \mu^3) p_0 \\
+        p_1 &= \left( \frac{\lambda}{\mu} \right) p_0, \\
+        p_2 &= \left( \frac{\lambda}{2 \mu} \right) p_1 = \left( \frac{\lambda^2}{2 \mu^2} \right) p_0, \\
+        p_3 &= \left( \frac{\lambda}{3 \mu} \right) p_2 = \left( \frac{\lambda^3}{3! \mu^3} \right) p_0, \\
         \vdots \\
-        p_m &= (\lambda / m \mu) p_{m-1} &&= (\lambda^m / m! \mu^m) p_0 \\
-        p_{m+1} &= (\lambda / m \mu) p_m &&= (\lambda^{m+1} / m m! \mu^{m+1}) p_0 \\
-        p_{m+2} &= (\lambda / m \mu) p_{m+1} &&= (\lambda^{m+2} / m^2 m! \mu^{m+2}) p_0 \\
+        p_m &= \left( \frac{\lambda}{m \mu} \right) p_{m-1} = \left( \frac{\lambda^m}{m! \mu^m} \right) p_0, \\
+        p_{m+1} &= \left( \frac{\lambda}{m \mu} \right) p_m = \left( \frac{\lambda^{m+1}}{m m! \mu^{m+1}} \right) p_0, \\
+        p_{m+2} &= \left( \frac{\lambda}{m \mu} \right) p_{m+1} = \left( \frac{\lambda^{m+2}}{m^2 m! \mu^{m+2}} \right) p_0, \\
         \vdots
-    \end{align}
+    \end{align}    
     \label{eq:mmm_eqs}    
     Generalising, we can write in short as,
     \begin{align}
-        p_n &= \frac{\lambda^n}{n! \mu^n}\ &&\quad\ ,1 \leq n < m \\
-        &= \frac{\lambda^n}{m^{n-m} m! \mu^n} p_0\ &&\quad\ ,n \geq m.  
+        p_n &= \frac{\lambda^n}{n! \mu^n} p_0\ &&\quad\ \text{if}\ 1 \leq n < m \\
+        &= \frac{\lambda^n}{m^{n-m} m! \mu^n} p_0\ &&\quad\ \text{if}\ n \geq m.  
     \end{align}
     Using the axioms of probability,
     \begin{align}
-        \sum_{n=0}^{\infty} p_n &= 1\\
-        \sum_{n=0}^{m-1} p_n + \sum_{n=m}^{\infty} p_n &= 1 \\ 
-        p_0 \big(1 + \sum_{n=1}^{m-1} \frac{1}{n!} (\frac{\lambda}{\mu})^n + \sum_{n=m}^{\infty} \frac{1}{m^{n-m}} \frac{1}{m!} (\frac{\lambda}{\mu})^n
-        \big) &= 1 \\
-        \therefore p_0 &= \big[1 + \sum_{n=1}^{m-1} \frac{1}{n!} (\frac{\lambda}{\mu})^n + \sum_{n=m}^{\infty} \frac{1}{m^{n-m}} \frac{1}{m!} (\frac{\lambda}{\mu})^n
-        \big] ^ {-1}. 
-    \end{align}
+        \sum_{n=0}^{\infty} p_n &= 1, \\
+        \sum_{n=0}^{m-1} p_n + \sum_{n=m}^{\infty} p_n &= 1, \\
+        p_0 \left( 1 + \sum_{n=1}^{m-1} \frac{1}{n!} \left( \frac{\lambda}{\mu} \right)^n + \sum_{n=m}^{\infty} \frac{1}{m^{n-m}} \frac{1}{m!} \left( \frac{\lambda}{\mu} \right)^n \right) &= 1, \\
+        \therefore p_0 &= \left[ 1 + \sum_{n=1}^{m-1} \frac{1}{n!} \left( \frac{\lambda}{\mu} \right)^n + \sum_{n=m}^{\infty} \frac{1}{m^{n-m}} \frac{1}{m!} \left( \frac{\lambda}{\mu} \right)^n \right]^{-1}.
+    \end{align}    
 \end{subequations}
 Thus, we can find other state probabilities in equilibrium. One important probability that we can consider is the probability of the event that there will be a queue. There will be a queue whenever, all of the $m$ servers are busy and there are arrivals.
-\qs{What is the queueing probability in an $M/M/m$ queue?}{
+\qs{What is the \emph{queueing} probability in an $M/M/m$ queue?}{
     \sol{
         \begin{align}
             \sP(\text{queueing}) &= \sP(n \geq m) \\
@@ -720,12 +800,117 @@ Thus, we can find other state probabilities in equilibrium. One important probab
     }
 }
 
+\chapter{Summary and other models}
+
+Finally, we have concluded all the basic concepts and models that one can cover in an introductory lecture. As always, you may have a question in your mind popping up as we reach the end of this discussion: What next? Well, as we have been mentioning periodically, there are several applications of queueing theory in industrial operations, computer science, retail markets, business operations, and more. You are now ready to apply the concepts learned here and demonstrate your creativity. 
+
+We will begin by first providing a summary of all the models discussed so far. Then, we will briefly touch upon other, more realistic models and finally conclude with a practical example where queueing theory has been applied.
+
+\section{Summary}
+
+We understand that reading through these notes might be exhausting. Therefore, for your quick reference, we have tabulated the results below, focusing primarily on the equilibrium state probability distributions.
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Queueing Model & State Probability Distribution & Examples \\
+        \hline
+        \hline
+        $M/M/1$ & 
+        \begin{tabular}{@{}l@{}} 
+        $p_0 = 1 - \rho$ \\ 
+        $p_n = \rho^n p_0$ 
+        \end{tabular} &
+        Queue at a call center, single ATM, etc. \\       
+        \hline
+        $M/M/1/N$ & $p_n = \big(\frac{1 - \rho}{1 - \rho ^ {N + 1}}\big) \rho ^ n\ \quad\ \ldots\ 0\leq n \leq N.$ & Airports, Hospitals, etc. \\
+        \hline
+        $M/M/\infty$ & \begin{tabular}{@{}l@{}} 
+            $p_n = \frac{\rho^n}{n!} e^{-\rho}$ \\
+            $\therefore N \sim \text{Poisson}(\rho)$ 
+            \end{tabular} & \\
+        \hline
+        $M/M/m$ & \begin{tabular}{@{}l@{}} 
+            $p_0 = \left[ 1 + \sum_{n=1}^{m-1} \frac{1}{n!} \left( \frac{\lambda}{\mu} \right)^n + \sum_{n=m}^{\infty} \frac{1}{m^{n-m}} \frac{1}{m!} \left( \frac{\lambda}{\mu} \right)^n \right]^{-1}$\\
+            $p_n = \frac{\lambda^n}{n! \mu^n} p_0 \quad \text{if} \ 1 \leq n < m$\\
+            $p_n = \frac{\lambda^n}{m^{n-m} m! \mu^n} p_0 \quad \text{if} \ n \geq m.$ 
+        \end{tabular} & Multi-core Processors \\ 
+        \hline
+    \end{tabular}
+\end{center}
+
+\section{Other models}
+The models we have encountered so far all assumed Markovian statistics for both the arrival and departure processes. However, we need not stick to these processes. Other distributions can be used to model scenarios more appropriately.
+
+For instance, at a bus or train ticket counter, the time required to satisfy the demands of each customer will be more or less the same. Thus, the service times can be modeled as deterministic.
+
+\cite{RobertazziQ,myReference} also provide results for the $M/G/1$ queue. Although the method for deriving these results differs from what we have done so far, it is simple enough to follow, with some \emph{Transform Theory} involved. Those interested may refer to these sources.
+
+More general models, such as $G/M/1$ and $G/G/1$, have analytical results derived in \cite{10.1214/aoms/1177728975,kleinrock1974queueing}.
+
+\section{Critical Application of Queueing Theory - A case study}
+The U.S. Military’s Air Force fleet includes 20 B-2 bombers, which require frequent maintenance. A key maintenance procedure, \emph{Low Observable} (LO), restores the special coating on the aircraft. However, maintenance scheduling and manpower distribution introduce unpredictability into the process.
+
+The B-2’s \emph{Flying Hour Program} has two main goals: maintaining operational readiness, including weapons preparedness, and ensuring wartime posture. Initially, each aircraft underwent a 200-flying hour post-flight inspection followed by \emph{heavy LO} restoration. This deterministic plan, however, resulted in poor Aircraft Availability (AA), with some B-2s completing the process in weeks, while others took up to six months.
+
+Data analysis revealed that, on average, 4.75 B-2s were grounded for LO maintenance at any time, reducing AA to 75\%. Additionally, about 3 aircraft were grounded for other maintenance, further reducing AA to 60\%, leaving only 12 B-2s available.
+
+To improve AA, maintenance procedures were updated. An acceptable AA range of 80-85\% (i.e., 17 B-2s) was set, with one plane requiring maintenance each week.
+
+
+We can now model this scenario using queueing theory. At any time, there is (or rather must be) a queue of, on average, at most 3 planes. Thus, we have:
+\[
+\bar{N} = 3.
+\]
+Additionally, one plane enters service every week, so the arrival rate is:
+\[
+\lambda = 1 \text{ per week} \quad \text{or} \quad \lambda = \frac{1}{7} \text{ per day}.
+\]
+
+By Little's Law, the average service time \(\bar{T}\) is given by:
+\begin{align}
+    \bar{T} &= \frac{\bar{N}}{\lambda} \\
+    &= \frac{3}{\frac{1}{7}} \\
+    &= 21 \text{ days}.
+\end{align}
+
+Thus, to maintain this system, the lead time for heavy LO maintenance must be 21 days. Using this estimate, the maintenance group was able to devise a schedule and routine to ensure the required AA. In this way, queueing theory played a key role in resource planning in a critical field.
+
 \chapter{Appendix}
 Only the bare minimum concepts have been covered here. I strongly advise that you go through the relevant material in \cite{pishro2014introduction}
+
 \section{Random Processes}
 \dfn{Random Process}{A random process is a collection (or a sequence) of variables usually indexed by time.
 }
 If the indexing variable is continuous, we refer to the process as a continuous-time random process and if the indexing variable is discrete, we call the process a discrete-time process. Thus, sampling a random process at a time instant gives a random variable. If this random variable is discrete, we call the process a discrete-valued process. Similarly, we define continuous-valued process. 
+
+\begin{figure}
+    % First subfigure: Branching Diagram
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \input{diagrams/splitting.tex}
+        \caption{Splitting (Thinning of Poisson Process)}
+        \label{fig:split}
+    \end{subfigure}
+    \hfill
+    % Second subfigure: Merging Diagram
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \input{diagrams/merging.tex}
+        \caption{Merging of Poisson Process}
+        \label{fig:merging}
+    \end{subfigure}
+    \label{fig:splitMerge}
+\end{figure}
+
+\dfn{Splitting (Thinning) of Possion Process}{
+    Consider a parent Poisson random process with rate $\lambda$. Then, if the arrivals in this process are split into $n$ different children with probabilities $p_1, p_2, \dots, p_n$, the result is $n$ Poisson processes with rates $\lambda p_1, \lambda p_2, \dots, \lambda p_n$. Note that we must have $\sum p_i = 1$. See Fig.\ref{fig:split}.
+}
+
+\dfn{Merging of Poisson Process}{
+    Let $N_1(t)$ and $N_2(t)$ be two Poisson processes with rates $\lambda_1$ and $\lambda_2$, respectively. Then, the process $N(t)$, defined as $N(t) = N_1(t) + N_2(t)$, is also a Poisson random process with rate $\lambda_1 + \lambda_2$. See Fig.\ref{fig:merging}.
+}
+
+See Fig.\ref{fig:split} and Fig.{fig:merging} to understand how a process is split into multiple ones or how multiple processes are combined into a single process.
 
 % References :
 \bibliography{references}
