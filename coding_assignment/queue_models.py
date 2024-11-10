@@ -206,6 +206,9 @@ def m_m_m_q(simTime, del_t, arrRate, depRate, numServers):
     2. The interarrival times.
     3. The departure times.    
     """ 
+    waiting_room_state = []
+    server_room_state = []
+
     # To store the inter-arrival and inter-departure times
     intArrTimes = []
     intDepTimes = [] 
@@ -264,6 +267,9 @@ def m_m_m_q(simTime, del_t, arrRate, depRate, numServers):
             else:
             # Send to a free server
                 activeIDs.append(customerID)
-            customerID += 1 
+            customerID += 1
+
+        waiting_room_state.append(len(waitingIDs))
+        server_room_state.append(len(activeIDs)) 
         
-    return [stateHistory, intArrTimes, intDepTimes, individualTimers]
+    return [stateHistory, intArrTimes, intDepTimes, individualTimers, waiting_room_state, server_room_state]

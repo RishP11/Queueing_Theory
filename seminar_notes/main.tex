@@ -375,23 +375,35 @@ Similar to the previous derivations, we obtain
         \frac{d P_0(t)}{d t} &= -\lambda P_0(t) + \mu P_{1}(t) 
     \end{align}
 \end{subequations}
-Solving these equations can be arduous especially for the transient phase of the system i.e., when the state probabilities have not settled or become \emph{stationary}. For a first-cut analysis we are satisfied with the stationary probabilities or the state probabilities when the system has reached equilibrium.
+Solving these equations can be arduous especially for the transient phase of the system i.e., when the state probabilities have not settled or become \emph{stationary}. For a first-cut analysis we are satisfied with the stationary distribution or the state probabilities when the system has reached equilibrium.
+\qs{When does a Markov chain achieve equilibrium}{
+    \sol{
+        It is apparent from the state diagram, Fig.\ref{fig:mm1_std}, that we are dealing with a discrete time Markov chain. A Markov chain is said to be in equilibrium or stationary when the state distribution is no longer time-variant. It is this distribution that we are most interested about. Moving forward, we will only concentrate on finding the stationary distributions.  
+    }
+}
+The formation of differential equations though easy was time consuming. Now we define a new quantity called \emph{Probability Flux} that will help us form recursive equations of the stationary distributions which we can easily solve. 
 
 \dfn{Probability Flux \cite{RobertazziQ}}{
     Probability Flux is defined as the product of the probability of being in the state at which a transition originates and the transition rate to which the state travels next.
+
+    It can be physically understood as the mean number of transitions that occur per unit time. For example, if $\lambda = 10\ \text{sec}^{-1}$ and probability of being in originating state is $0.5$, then on an average the systems makes that transition five times every second.   
 }
-Probability flux can be understood better if we make an analogy. However, beware that the following analogy is only a loose one and does not extrapolate to other results. We can relate a node in the state transition diagram to a node in an electrical circuit. Just as Kirchhoff's Circuit Law states that the current into a node must equal the current out of it, similarly, the flow of transitions into a node of a state transition diagram must equal the flow out of it.
+
+Probability flux can be understood better if we make an analogy. However, beware that the following analogy is only a loose one and does not extrapolate to other results. We can relate a node in the state transition diagram to a node in an electrical circuit. Just as Kirchhoff's Current Law states that the current into a node must equal the current out of it, similarly, the flow of transitions into a node of a state transition diagram must equal the flow out of it in equilibrium. The resultant equations that one gets are collectively known as \emph{Global Balance Equations}.
 
 For those not yet convinced, lets just go by the definition of Probability flux. Take a node say node 1 in Fig.\ref{fig:mm1_std}. If we add the probability fluxes together with the signs representing the direction, we get,
 \begin{align}
     \Phi_P(\text{node}\ 1) &= \text{Flow out of node } 1 + \text{Flow into node } 1\\
     &= -(\lambda + \mu) p_1 + \lambda p_0 + \mu p_2
 \end{align}
-If you observe carefully, this is the right-hand side of Eq. (2.20a) for $n = 1$. So, if we are at equilibrium, we expect that the state probabilities be time-invariant, i.e., $\frac{dp_n(t)}{dt} = 0$. Thus, we can use these to form recursive equations for the state probabilities at equilibrium and obtain the stationary distribution.
+If you observe carefully, this is the right-hand side of Eq. (2.20a) for $n = 1$. So, if we are at equilibrium, we expect that the state probabilities be time-invariant, i.e., $\frac{dp_n(t)}{dt} = 0$. Thus, $\Phi_P(\text{node} 1) = 0$, i.e., the total flux into a node equals the total flux out of a node.
+We can use these to form recursive equations for the state probabilities at equilibrium and obtain the stationary distribution.
 
-In conclusion, when the system is in equilibrium, the probability flux into a state equals the probability flux out of the state. This is called flow balancing and leads to what are known as the local (global) balancing equations.
+In conclusion, when the system is in equilibrium, the probability flux into a state equals the probability flux out of the state. This is called flow balancing and leads to what are known as the balancing equations.
 
-Going back to our queue model, we get the following ``local balance equations'',
+To further simplify this process, we can form the \text{local balance equation}s which essentially say that the flow toward the right, across a boundary separating two states of a system, equals the flow towards the left\footnote{This process of forming the local balance equations is easy only when the states are 1-D. But when the states are drawn in higher dimensions, it is claimed in \cite{myReference} that a cluster-based approach would be easier. These structures being beyond the scope of these notes have not been verified or even looked into by us.} 
+
+Going back to our queue model, we get the following local balance equations,
 \begin{subequations}
     \begin{align}
         \lambda p_0 &= \mu p_1 &&\quad \implies p_1 = \frac{\lambda}{\mu} p_0 \\ 
@@ -400,7 +412,7 @@ Going back to our queue model, we get the following ``local balance equations'',
         \lambda p_{n-1} &= \mu p_n &&\quad \implies p_n = \frac{\lambda}{\mu} p_{n-1} \\
         \vdots \\
     \end{align}
-    Thus, we get the equation,
+    Thus, we get the general equation\footnote{\cite{myReference} provides an arguably better proof by principle of mathematical induction in our opinion which you may refer.},
     \begin{align}
         p_n = \left(\frac{\lambda}{\mu}\right)^n p_0
     \end{align}
@@ -503,7 +515,7 @@ Consider,
     \label{fig:mm1_stats}
 \end{figure}
 
-Please see Figs.\ref{fig:avgMM1_plot} and \ref{fig:varMM1_plot}. Note how the statistics blow up as the Utilization factor approaches 1.
+Please see Figs.\ref{fig:avgMM1_plot} and \ref{fig:varMM1_plot}. Note how the statistics blow up as the Utilization factor approaches 1. Due to the high variance as $\rho \rightarrow 1$, the randomness in the system increases i.e., the unpredictability in the queue is very high. How do you think this might affect analysis of such a queue?
 
 \qs{Where might we use these statistics?}{
     
@@ -632,7 +644,7 @@ Recollecting the local balance equations, we have under equilibrium,
 \end{subequations}
 
 \dfn{Blocking Probability}{
-    The blocking probability is the probability that the queue buffer is full, i.e., $P_N(t)$. Using the derived equations, Blocking Probability is $\frac{(1-\rho)}{(1 - \rho^{N+1})} \rho^N$ when the system is in equilibrium.
+    The blocking probability is the probability that the queue buffer is full, i.e., $P_N$. Using the derived equations, Blocking Probability is $\frac{(1-\rho)}{(1 - \rho^{N+1})} \rho^N$ when the system is in equilibrium.
 }
 \nt{
     Using the blocking probability, we can find the mean number of customers turned away per unit time as $\lambda P_N$.
@@ -734,6 +746,27 @@ Defining $\rho = \frac{\lambda}{\mu}$, we get:
 \label{eq:mminfinite_eqs}
 \end{subequations}
 
+\nt{
+    An $M/M/\infty$ queue can also be interpreted in a slightly different manner. From the state transition diagram, Fig.\ref{fig:std_mminfinite}, that the aggregate output rate of the system is proportional to the state of the system. Thus, one can say that this a queue with a single server but with a \emph{load-dependent service rate}. See Fig.\ref{fig:mmInf_output_rate}
+}
+
+\begin{figure}
+    \begin{subfigure}[b]{0.55\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{plots/mmInf_output_rate.pdf}
+        \caption{Effective (aggregate) output rate in a $M/M/\infty$ system.}
+        \label{fig:mmInf_output_rate}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.55\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{plots/mmm_output_rate.pdf}
+        \caption{Effective (aggregate) output rate in a $M/M/30$ system.}
+        \label{fig:mmm_output_rate}
+    \end{subfigure}
+    \label{fig:output_rates}
+\end{figure}
+
 \section{$M/M/m$ - $m$ Parallel servers with a queue}
 
 \begin{figure}[ht]   
@@ -748,6 +781,7 @@ Defining $\rho = \frac{\lambda}{\mu}$, we get:
     \caption{State transition diagram of an $M/M/m$ queue.}
 \label{fig:mmm_std}
 \end{figure}
+
 Now, we make a realistic assumption and consider a model with only $m$ parallel servers. This results in a flow diagram, shown in Fig.\ref{fig:mmm_blk}, and a state transition diagram, shown in Fig.\ref{fig:mmm_std}. 
 
 The transition rates in this case are given by:
@@ -798,6 +832,13 @@ Thus, we can find other state probabilities in equilibrium. One important probab
             \sP(\text{queueing}) = \frac{1}{m!} (\frac{\lambda}{\mu})^m \frac{1}{1-\rho} p_0
         \end{align}
     }
+}
+\nt{
+    Like in previous, model we can observe that the aggregate output rate of the system is proportional to the state of the system. However, now there is a limit on how much this rate can increase. See Fig.\ref{fig:mmm_output_rate}. 
+
+    This kind of queue can provide a lot of insights in telecommunications field as this model fits many use cases in the field very well. The \emph{Queueing probability} found in the previous question represents the probability that all the servers are busy. The closed form expression of this probability is called \emph{Erlang-C formula}. Note that by substituting $\rho = 1$, we go back to the $M/M/1$ queue. Our intuition tells us that as $m$, number of servers increases, the queueing probability should go down. To verify this we have plotted this probability as a function of $m$. See Fig. 
+
+    This metric can be used as a measure of performance of a communication system and to take decisions in the field.
 }
 
 \chapter{Summary and other models}
@@ -909,7 +950,7 @@ If the indexing variable is continuous, we refer to the process as a continuous-
     Let $N_1(t)$ and $N_2(t)$ be two Poisson processes with rates $\lambda_1$ and $\lambda_2$, respectively. Then, the process $N(t)$, defined as $N(t) = N_1(t) + N_2(t)$, is also a Poisson random process with rate $\lambda_1 + \lambda_2$. See Fig.\ref{fig:merging}.
 }
 
-See Fig.\ref{fig:split} and Fig.{fig:merging} to understand how a process is split into multiple ones or how multiple processes are combined into a single process.
+See Fig.\ref{fig:split} and Fig.\ref{fig:merging} to understand how a process is split into multiple ones or how multiple processes are combined into a single process.
 
 % References :
 \bibliography{references}
