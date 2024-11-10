@@ -226,20 +226,18 @@ def m_m_m_q(simTime, del_t, arrRate, depRate, numServers):
 
     for i in range(1, num_runs):
         # Flip a coin for arrival
-        # print(f'--------------Run Begin-------------------------')  
-        # print(f'Previous state ={numCustomers[i-1]}')
         isArrival = np.random.binomial(1, min(1, arrRate * del_t))
-        # print(f'isArrival = {isArrival}')
+        
         # Flip a coin for departure only if there is atleast 1 customer
         if stateHistory[i-1] >= 1:
             # Create a departures list of indices
             isDepartures = [np.random.binomial(1, min(1, depRate * del_t)) for _ in range(len(activeIDs))]
         else:
             isDepartures = []
-        # print(f'isDepartures = {isDepartures}')
+        
         # Update the current state
         stateHistory[i] = stateHistory[i-1] + isArrival - np.sum(isDepartures)
-        # print(f'Updated state = {numCustomers[i]}')
+        
         # Increment the timers for both arrival and departure
         arrTimer += del_t
         for idx in activeIDs:
@@ -253,14 +251,13 @@ def m_m_m_q(simTime, del_t, arrRate, depRate, numServers):
         # Keep only the unserved IDs in the active ID list
         tempIDs = [activeIDs[i] for i in range(len(isDepartures)) if isDepartures[i] == 0]
         activeIDs = tempIDs
-        # print(f'activeIDs_post_dep = {activeIDs}')
         
         # If there was an arrival 
         if isArrival:
             intArrTimes.append(arrTimer)        # Record the Inter-arrival time
             arrTimer = 0                        # Reset the timer
             individualTimers.append(0)          # Add a custom timer for the new customer
-             
+
             if len(activeIDs) == numServers :
             # No free server :: Put the arrival in the waiting room 
                 waitingIDs.append(customerID)
@@ -268,7 +265,5 @@ def m_m_m_q(simTime, del_t, arrRate, depRate, numServers):
             # Send to a free server
                 activeIDs.append(customerID)
             customerID += 1 
-        # print(f'activeIDs_post_arr = {activeIDs}')
-
-        # print(f'--------------------Run End---------------------------')
+        
     return [stateHistory, intArrTimes, intDepTimes, individualTimers]
