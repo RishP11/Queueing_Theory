@@ -635,7 +635,7 @@ Recollecting the local balance equations, we have under equilibrium,
     The blocking probability is the probability that the queue buffer is full, i.e., $P_N(t)$. Using the derived equations, Blocking Probability is $\frac{(1-\rho)}{(1 - \rho^{N+1})} \rho^N$ when the system is in equilibrium.
 }
 \nt{
-    Using the blocking probability, we can find the mean number of customers turned away per unit time as $\lambda P_N(t)$.
+    Using the blocking probability, we can find the mean number of customers turned away per unit time as $\lambda P_N$.
 }
 
 \qs{What is $p_n$ when $\lambda / \mu = 1$?}{
@@ -810,30 +810,29 @@ We will begin by first providing a summary of all the models discussed so far. T
 
 We understand that reading through these notes might be exhausting. Therefore, for your quick reference, we have tabulated the results below, focusing primarily on the equilibrium state probability distributions.
 \begin{center}
-    \begin{tabular}{|c|c|c|}
+    \begin{tabular}{|c|c|}
         \hline
-        Queueing Model & State Probability Distribution & Examples \\
+        Queueing Model & State Probability Distribution\\
         \hline
         \hline
         $M/M/1$ & 
         \begin{tabular}{@{}l@{}} 
         $p_0 = 1 - \rho$ \\ 
         $p_n = \rho^n p_0$ 
-        \end{tabular} &
-        Queue at a call center, single ATM, etc. \\       
+        \end{tabular} \\       
         \hline
-        $M/M/1/N$ & $p_n = \big(\frac{1 - \rho}{1 - \rho ^ {N + 1}}\big) \rho ^ n\ \quad\ \ldots\ 0\leq n \leq N.$ & Airports, Hospitals, etc. \\
+        $M/M/1/N$ & $p_n = \big(\frac{1 - \rho}{1 - \rho ^ {N + 1}}\big) \rho ^ n\ \quad\ \ldots\ 0\leq n \leq N.$\\
         \hline
         $M/M/\infty$ & \begin{tabular}{@{}l@{}} 
             $p_n = \frac{\rho^n}{n!} e^{-\rho}$ \\
             $\therefore N \sim \text{Poisson}(\rho)$ 
-            \end{tabular} & \\
+            \end{tabular}\\
         \hline
         $M/M/m$ & \begin{tabular}{@{}l@{}} 
             $p_0 = \left[ 1 + \sum_{n=1}^{m-1} \frac{1}{n!} \left( \frac{\lambda}{\mu} \right)^n + \sum_{n=m}^{\infty} \frac{1}{m^{n-m}} \frac{1}{m!} \left( \frac{\lambda}{\mu} \right)^n \right]^{-1}$\\
             $p_n = \frac{\lambda^n}{n! \mu^n} p_0 \quad \text{if} \ 1 \leq n < m$\\
             $p_n = \frac{\lambda^n}{m^{n-m} m! \mu^n} p_0 \quad \text{if} \ n \geq m.$ 
-        \end{tabular} & Multi-core Processors \\ 
+        \end{tabular}\\ 
         \hline
     \end{tabular}
 \end{center}
