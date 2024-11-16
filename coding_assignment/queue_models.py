@@ -274,18 +274,15 @@ def m_m_m_q(simTime, del_t, arrRate, depRate, numServers):
         
     return [stateHistory, intArrTimes, intDepTimes, individualTimers, waiting_room_state, server_room_state]
 
-def m_g_1(numTotalCustomers, arrRate, depRate, servDist):
+def m_g_1_q(numTotalCustomers, arrRate, servDist, distParams):
     """
     Function to simulate an M/G/1 queue :
     numTotalCustomers = Duration of the simulation = In number of customers
     arrRate           = Parameter of exponential arrival distribution
     depRate           = Parameter of service distribution 
-    servDist          = 'exponential', 'deterministic', ''
-
+    servDist          = 'exponential', 'deterministic', 'gamma', 'uniform'
+    distParams*       = Appropriate parameters of the distribution of sevice times.
     """
-    # arrRate = 5 
-    # numTotalCustomers = 10 ** 4
-
     # Generate the interarrival times :: Markovian Process
     intArrTimes = np.random.exponential(1/arrRate, numTotalCustomers-1)
 
@@ -293,17 +290,17 @@ def m_g_1(numTotalCustomers, arrRate, depRate, servDist):
     arrTimeStamps = np.append([0], np.cumsum(intArrTimes))
 
     # Service Times for each of the customers 
-    if servDist == 'exponential'
-        indServiceTimes = np.random.exponential(1/depRate, numTotalCustomers)
-    # elif    
-    #     indServiceTimes = np.random.exponential(1/depRate, numTotalCustomers)
-    # elif    
-    #     indServiceTimes = np.random.exponential(1/depRate, numTotalCustomers)
-    #     elif
-    #     indServiceTimes = np.random.exponential(1/depRate, numTotalCustomers)
-    # else 
-    #     print(f'Error: Service Time distribution not available.')
-    #     return None
+    if servDist == 'exponential':
+        indServiceTimes = np.random.exponential(1/distParams, numTotalCustomers)
+    elif servDist == 'deterministic':   
+        indServiceTimes = distParams * np.ones(numTotalCustomers)
+    elif servDist == 'gamma':   
+        indServiceTimes = np.random.gamma(distParams[0], distParams[1], numTotalCustomers)
+    elif servDist == 'uniform': 
+        indServiceTimes = np.random.uniform(distParams, numTotalCustomers)
+    else :
+        print(f'Error: Service Time distribution not available.')
+        return None
 
     # Finding the time stamp at which each person departed
     depTimeStamps = [indServiceTimes[0]]
