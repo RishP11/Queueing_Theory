@@ -376,7 +376,7 @@ Similar to the previous derivations, we obtain
     \end{align}
 \end{subequations}
 Solving these equations can be arduous especially for the transient phase of the system i.e., when the state probabilities have not settled or become \emph{stationary}. For a first-cut analysis we are satisfied with the stationary distribution or the state probabilities when the system has reached equilibrium.
-\qs{When does a Markov chain achieve equilibrium}{
+\qs{When does a Markov chain achieve equilibrium?}{
     \sol{
         It is apparent from the state diagram, Fig.\ref{fig:mm1_std}, that we are dealing with a discrete time Markov chain. A Markov chain is said to be in equilibrium or stationary when the state distribution is no longer time-variant. It is this distribution that we are most interested about. Moving forward, we will only concentrate on finding the stationary distributions.  
     }
@@ -843,7 +843,7 @@ Thus, we can find other state probabilities in equilibrium. One important probab
 
 \chapter{Summary and other models}
 
-Finally, we have concluded all the basic concepts and models that one can cover in an introductory lecture. As always, you may have a question in your mind popping up as we reach the end of this discussion: What next? Well, as we have been mentioning periodically, there are several applications of queueing theory in industrial operations, computer science, retail markets, business operations, and more. You are now ready to apply the concepts learned here and demonstrate your creativity. 
+Finally, we have covered all the basic concepts and models that one can cover in an introductory lecture. As always, you may have a question in your mind popping up as we reach the end of this discussion: What next? Well, as we have been mentioning periodically, there are several applications of queueing theory in industrial operations, computer science, retail markets, business operations, and more. You are now ready to apply the concepts learned here and demonstrate your creativity. 
 
 We will begin by first providing a summary of all the models discussed so far. Then, we will briefly touch upon other, more realistic models and finally conclude with a practical example where queueing theory has been applied.
 
@@ -887,15 +887,14 @@ For instance, at a bus or train ticket counter, the time required to satisfy the
 
 More general models, such as $G/M/1$ and $G/G/1$, have analytical results derived in \cite{10.1214/aoms/1177728975,kleinrock1974queueing}.
 
-\section{Critical Application of Queueing Theory - A case study}
+\section{Critical Application of Queueing Theory - A case study\cite{key}}
 The U.S. Military’s Air Force fleet includes 20 B-2 bombers, which require frequent maintenance. A key maintenance procedure, \emph{Low Observable} (LO), restores the special coating on the aircraft. However, maintenance scheduling and manpower distribution introduce unpredictability into the process.
 
-The B-2’s \emph{Flying Hour Program} has two main goals: maintaining operational readiness, including weapons preparedness, and ensuring wartime posture. Initially, each aircraft underwent a 200-flying hour post-flight inspection followed by \emph{heavy LO} restoration. This deterministic plan, however, resulted in poor Aircraft Availability (AA), with some B-2s completing the process in weeks, while others took up to six months.
+The B-2's \emph{Flying Hour Program} has two main goals: maintaining operational readiness, including weapons preparedness, and ensuring wartime posture. Initially, each aircraft underwent a 200-flying hour post-flight inspection followed by \emph{heavy LO} restoration. This deterministic plan, however, resulted in poor Aircraft Availability (AA), with some B-2s completing the process in weeks, while others took up to six months.
 
 Data analysis revealed that, on average, 4.75 B-2s were grounded for LO maintenance at any time, reducing AA to 75\%. Additionally, about 3 aircraft were grounded for other maintenance, further reducing AA to 60\%, leaving only 12 B-2s available.
 
-To improve AA, maintenance procedures were updated. An acceptable AA range of 80-85\% (i.e., 17 B-2s) was set, with one plane requiring maintenance each week.
-
+To improve AA, maintenance procedures were updated. An acceptable AA range of 80-85\% (i.e., 17 B-2s) was set. Data analysis revealed that every seven days one B2 required maintenance.
 
 We can now model this scenario using queueing theory. At any time, there is (or rather must be) a queue of, on average, at most 3 planes. Thus, we have:
 \[
