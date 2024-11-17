@@ -1,0 +1,1809 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{assignment\_02}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+% Title Page
+\vspace*{\fill}
+\begin{center}
+    \textsc{\LARGE EE 699 - Next Generation Wireless Networks}\\[0.6cm]
+    \noindent\makebox[\linewidth]{\rule{0.7\paperwidth}{0.6pt}}\\[0.8cm]
+
+    { \Huge \bfseries Assignment 02}\\[0.3cm]
+    \noindent\makebox[\linewidth]{\rule{0.7\paperwidth}{0.6pt}}\\[0.8cm]
+
+    \begin{tabular}{l l}
+        \Large Rishabh Pomaje & \Large \href{mailto:210020036@iitdh.ac.in}{210020036@iitdh.ac.in} \\[0.5cm]
+    \end{tabular}\\
+    \Large \textit{Instructor: }Prof. Naveen M. B.\\[5cm]
+    \textsc{\Large Autumn 2024-25\\[0.3cm] Indian Institute of Technology Dharwad}
+\end{center}
+\vspace*{\fill}
+
+\newpage
+\tableofcontents{}
+\newpage
+
+\begin{itemize}
+\item
+  In this notebook, we will simulate the following queues and compare
+  our empirical findings with the analytic results.
+\item
+  Scheduling discipline used : \emph{First-In-First-Out}.
+\end{itemize}
+
+    \paragraph{\texorpdfstring{ Note }{ Note }}\label{note}
+
+\begin{itemize}
+\item
+  In order to make the below jupyter notebook and code memory and speed
+  efficient, I have reused the variable names. This also provides an
+  additional benefit of consistency of definitions. The downside is
+  that, due to the way jupyter notebook works when reusing variables,
+  the previous data is overwritten, it is highly likely that once you
+  run a cell and go to a previous cell and run it again, it will give
+  erroneous, invalid results.
+\item
+  I suggest that you run the complete notebook at once or a cell at a
+  time (but in a flow) to avoid such issues.
+\item
+  Due to the extensive simulation period (for better generalization and
+  reaching a steady state), I request you give each queue simulation
+  \textasciitilde10 seconds to complete.
+\item
+  The distribution parameters need to be chosen appropriately so as to
+  ensure that the average arrival rate is less than the average
+  departure rate in order to ensure that the queueing system achieves
+  equilibrium. In case, the queue conditions are aberrant from those
+  prescribed the behavior of the queue and the analytical results
+  printed here are \textbf{invalid}.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Dependencies :}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt} 
+\PY{o}{\PYZpc{}}\PY{k}{config} InlineBackend.figure\PYZus{}format=\PYZsq{}svg\PYZsq{}
+\PY{c+c1}{\PYZsh{} Set global parameters for publication quality}
+\PY{n}{plt}\PY{o}{.}\PY{n}{rcParams}\PY{o}{.}\PY{n}{update}\PY{p}{(}\PY{p}{\PYZob{}}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{text.usetex}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{k+kc}{True}\PY{p}{,}            \PY{c+c1}{\PYZsh{} Comment if TeX is unavailable on your machine }
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{font.family}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{serif}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}          
+\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k}{as} \PY{n+nn}{sns} 
+\PY{n}{sns}\PY{o}{.}\PY{n}{set\PYZus{}theme}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{paper}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Global functions :}
+\PY{k}{def} \PY{n+nf}{factorial}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{:}
+    \PY{n}{n\PYZus{}fac} \PY{o}{=} \PY{l+m+mi}{1} 
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{n}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        \PY{n}{n\PYZus{}fac} \PY{o}{*}\PY{o}{=} \PY{n}{i}
+    
+    \PY{k}{return} \PY{n}{n\PYZus{}fac}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Global Definitions :}
+\PY{n}{del\PYZus{}t} \PY{o}{=} \PY{l+m+mi}{10} \PY{o}{*}\PY{o}{*} \PY{o}{\PYZhy{}}\PY{l+m+mi}{3}            \PY{c+c1}{\PYZsh{} smallest time resolution :: in some time units}
+
+\PY{c+c1}{\PYZsh{} del\PYZus{}t = 10 ** \PYZhy{}4            \PYZsh{} Uncomment for better matching of empirical results*     }
+\PY{n}{total\PYZus{}simul\PYZus{}time} \PY{o}{=} \PY{l+m+mi}{1000}     \PY{c+c1}{\PYZsh{} In common time units}
+\PY{n}{arrival\PYZus{}rate} \PY{o}{=} \PY{l+m+mi}{6}            \PY{c+c1}{\PYZsh{} Number of arrivals per unit time}
+\PY{n}{departure\PYZus{}rate} \PY{o}{=} \PY{l+m+mi}{11}         \PY{c+c1}{\PYZsh{} Number of departure per unit time}
+
+\PY{c+c1}{\PYZsh{} * making del\PYZus{}t smaller will result in closer matching of the analytical results with empirical ones.}
+\PY{c+c1}{\PYZsh{} However, the simulation time (execution time) of the code increases. It might require upto 2\PYZhy{}3 mins }
+\PY{c+c1}{\PYZsh{} per queue for simluation to complete. }
+\end{Verbatim}
+\end{tcolorbox}
+
+\newpage
+    \section{M/M/1 Queue}
+
+\begin{itemize}
+\tightlist
+\item
+  Model assumptions:
+
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \tightlist
+  \item
+    The arrivals are Poisson with rate \(\lambda\).
+  \item
+    The service times are exponential with rate \(\mu\).
+  \item
+    There is a single server and the queue length in not limited.
+  \end{enumerate}
+\item
+  Definition :
+
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \tightlist
+  \item
+    \(\rho = \frac{\lambda}{\mu}\).
+  \end{enumerate}
+\item
+  Note: The arrival rate should be lesser than the departure rate to
+  achieve equilibrium.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{m\PYZus{}m\PYZus{}1\PYZus{}q}\PY{p}{(}\PY{n}{simTime}\PY{p}{,} \PY{n}{del\PYZus{}t}\PY{p}{,} \PY{n}{arrRate}\PY{p}{,} \PY{n}{depRate}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{} }
+\PY{l+s+sd}{    Function to simulate an M/M/1 queue.}
+\PY{l+s+sd}{    Just input }
+\PY{l+s+sd}{    1. simTime = Time duration (in seconds) that you would like to simulate the queue for.}
+\PY{l+s+sd}{    2. arrRate = The arrival rate (per unit time)}
+\PY{l+s+sd}{    3. depRate = The departure rate (per unit time)}
+
+\PY{l+s+sd}{    You will get as output 3 lists.}
+\PY{l+s+sd}{    1. The state of the queue at time t = 0, delT, 2delT, 3delT, and so on.}
+\PY{l+s+sd}{    2. The interarrival times.}
+\PY{l+s+sd}{    3. The departure times.   }
+\PY{l+s+sd}{    4. The individual \PYZdq{}waiting times\PYZdq{}.(i.e., the time required to wait in the queue + the time to get served). }
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}} 
+    \PY{c+c1}{\PYZsh{} To store the inter\PYZhy{}arrival and inter\PYZhy{}departure times}
+    \PY{n}{intArrTimes} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{intDepTimes} \PY{o}{=} \PY{p}{[}\PY{p}{]} 
+    
+    \PY{c+c1}{\PYZsh{} Timers for arrival and departure}
+    \PY{n}{arrTimer} \PY{o}{=} \PY{l+m+mi}{0} 
+    \PY{n}{depTimer} \PY{o}{=} \PY{l+m+mi}{0} 
+
+    \PY{c+c1}{\PYZsh{} Start with an empty queue :: Stores the state of the queue at [t=0, t=delT, t=2delT, t=3delT, ...]}
+    \PY{n}{num\PYZus{}runs} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{simTime} \PY{o}{/} \PY{n}{del\PYZus{}t}\PY{p}{)}
+    \PY{n}{stateHistory} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{num\PYZus{}runs}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{int}\PY{p}{)}            
+    
+    \PY{c+c1}{\PYZsh{} Individual customer timer and tracking ID (ID corresponds to the one being served).}
+    \PY{n}{individualTimers} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{customerID} \PY{o}{=} \PY{l+m+mi}{0}                                
+
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{num\PYZus{}runs}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} Flip a coin for an arrival  }
+        \PY{n}{isArrival} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{binomial}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{min}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{arrRate} \PY{o}{*} \PY{n}{del\PYZus{}t}\PY{p}{)}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Flip a coin for departure only if there is atleast one customer}
+        \PY{k}{if} \PY{n}{stateHistory}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{l+m+mi}{1}\PY{p}{:}
+            \PY{n}{isDeparture} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{binomial}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{min}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{depRate} \PY{o}{*} \PY{n}{del\PYZus{}t}\PY{p}{)}\PY{p}{)}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{isDeparture} \PY{o}{=} \PY{l+m+mi}{0}
+
+        \PY{c+c1}{\PYZsh{} Update the current state}
+        \PY{n}{stateHistory}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{stateHistory}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{+} \PY{n}{isArrival} \PY{o}{\PYZhy{}} \PY{n}{isDeparture}
+        
+        \PY{c+c1}{\PYZsh{} Increment the timers for both inter\PYZhy{}arrival and inter\PYZhy{}departure}
+        \PY{n}{arrTimer} \PY{o}{+}\PY{o}{=} \PY{n}{del\PYZus{}t}
+        \PY{n}{depTimer} \PY{o}{+}\PY{o}{=} \PY{n}{del\PYZus{}t}
+        \PY{c+c1}{\PYZsh{} Increment the individual customer timers (for all those in the queue (incl. one in service))}
+        \PY{k}{for} \PY{n}{idx} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{customerID}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{individualTimers}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+            \PY{n}{individualTimers}\PY{p}{[}\PY{n}{idx}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n}{del\PYZus{}t}
+
+        \PY{k}{if} \PY{n}{isArrival}\PY{p}{:}
+            \PY{n}{intArrTimes}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{arrTimer}\PY{p}{)}        \PY{c+c1}{\PYZsh{} Record the inter\PYZhy{}arrival timer reading}
+            \PY{n}{arrTimer} \PY{o}{=} \PY{l+m+mi}{0}                        \PY{c+c1}{\PYZsh{} Reset the timer for the same}
+            \PY{n}{individualTimers}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}          \PY{c+c1}{\PYZsh{} Add a new timer for new customer}
+        \PY{c+c1}{\PYZsh{} Similarly for departures}
+        \PY{k}{if} \PY{n}{isDeparture}\PY{p}{:}
+            \PY{n}{intDepTimes}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{depTimer}\PY{p}{)}        \PY{c+c1}{\PYZsh{} Record the inter\PYZhy{}departure timer reading}
+            \PY{n}{depTimer} \PY{o}{=} \PY{l+m+mi}{0}                        \PY{c+c1}{\PYZsh{} Reset the timer for the same}
+            \PY{n}{customerID} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}                     \PY{c+c1}{\PYZsh{} Move on to the next customer.}
+
+    \PY{k}{return} \PY{p}{[}\PY{n}{stateHistory}\PY{p}{,} \PY{n}{intArrTimes}\PY{p}{,} \PY{n}{intDepTimes}\PY{p}{,} \PY{n}{individualTimers}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{queue\PYZus{}history}\PY{p}{,} \PY{n}{arr\PYZus{}Times}\PY{p}{,} \PY{n}{dep\PYZus{}Times}\PY{p}{,} \PY{n}{ind\PYZus{}Times} \PY{o}{=} \PY{n}{m\PYZus{}m\PYZus{}1\PYZus{}q}\PY{p}{(}\PY{n}{total\PYZus{}simul\PYZus{}time}\PY{p}{,} \PY{n}{del\PYZus{}t}\PY{p}{,} \PY{n}{arrival\PYZus{}rate}\PY{p}{,} \PY{n}{departure\PYZus{}rate}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{itemize}
+\tightlist
+\item
+  Evolution of the state of the system
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{del\PYZus{}t} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{total\PYZus{}simul\PYZus{}time} \PY{o}{/} \PY{n}{del\PYZus{}t}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{queue\PYZus{}history}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{navy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{time}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{State of the system, \PYZdl{}N(t)\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{M/M/1 with \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda =\PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{, \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mu = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mm1\PYZus{}state\PYZus{}history\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.pdf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mm1\PYZus{}state\PYZus{}history\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.svg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{transparent}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_0.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Observations: 1. The queue size does not grow without bounds when
+\(\lambda < \mu\).
+
+    \begin{itemize}
+\tightlist
+\item
+  Distribution of Inter-Arrival times
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Analytical Distribution : Inter-arrival times
+  \(\overset{i.i.d}{\sim} \text{Exponential}(\lambda)\), where
+  \(\lambda\) is the arrival rate.
+\end{enumerate}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Ideal PDF of Inter\PYZhy{}arrival times :}
+\PY{n}{t\PYZus{}curr\PYZus{}customer} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{arr\PYZus{}Times}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1000}\PY{p}{)}
+\PY{n}{analytical\PYZus{}dist} \PY{o}{=} \PY{n}{arrival\PYZus{}rate} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{arrival\PYZus{}rate} \PY{o}{*} \PY{n}{t\PYZus{}curr\PYZus{}customer}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Plot the ideal line}
+\PY{n}{axes}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{t\PYZus{}curr\PYZus{}customer}\PY{p}{,} \PY{n}{analytical\PYZus{}dist}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{purple}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Analytical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Plot the empirical line}
+\PY{n}{axes}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{arr\PYZus{}Times}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{31}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{edgecolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tan}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{salmon}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Empirical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{time}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}f\PYZus{}T(t)\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{M/M/1 with \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda =\PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{, \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mu = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mm1\PYZus{}interArrivalTime\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.pdf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mm1\PYZus{}interArrivalTime\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.svg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{transparent}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_12_0.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Observations: 1. The analytical distribution matches the empirically
+plotted density histogram. 2. The distribution of interarrival times is
+exponential with rate \(\lambda\).
+
+    \begin{itemize}
+\tightlist
+\item
+  State Probabilities
+\end{itemize}
+
+Analytical State Probabilities in equilibrium i.e., when
+(\(\lambda < \mu\)), \begin{align}
+p_n &= \mathbb{P}(\text{Queue is in state }n) \\
+    &= (1 - \rho) \rho^n\ \quad\ \ldots\ 0 \leq n.
+\end{align}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{rho} \PY{o}{=} \PY{n}{arrival\PYZus{}rate} \PY{o}{/} \PY{n}{departure\PYZus{}rate}
+\PY{n}{analytical\PYZus{}dist} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{25}\PY{p}{)}\PY{p}{:}
+    \PY{n}{p\PYZus{}i} \PY{o}{=} \PY{p}{(}\PY{n}{rho} \PY{o}{*}\PY{o}{*} \PY{n}{i}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{rho}\PY{p}{)}
+    \PY{n}{analytical\PYZus{}dist}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{p\PYZus{}i}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} First, we will extract the unique states and their respective frequencies:}
+\PY{n}{unique\PYZus{}elements}\PY{p}{,} \PY{n}{counts} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n}{queue\PYZus{}history}\PY{p}{,} \PY{n}{return\PYZus{}counts}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{total\PYZus{}count} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{counts}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{stem}\PY{p}{(}\PY{n}{analytical\PYZus{}dist}\PY{p}{,} \PY{n}{linefmt}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cornflowerblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{basefmt}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cornflowerblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Analytical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{n}{unique\PYZus{}elements}\PY{p}{,} \PY{n}{counts} \PY{o}{/} \PY{n}{total\PYZus{}count}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{midnightblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Empirical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}p\PYZus{}n\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{M/M/1 with \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda =\PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{, \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mu = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mm1\PYZus{}stateProbs\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.pdf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mm1\PYZus{}stateProbs\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.svg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{transparent}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_15_0.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Observations: 1. For the most part, the fit of the PMF found
+analytically and that found bar plotting the empirical results match up.
+2. The slight mismatch in some states is due to the stochastic (random)
+variability of the experiment.
+
+    \begin{itemize}
+\tightlist
+\item
+  Average number of customers and Variance of number of customers
+\end{itemize}
+
+Analytical Expressions (in equilibrium): \begin{align}
+\text{Mean number of customers} &:       \bar{N} = \frac{\rho}{1 - \rho} \\
+\text{Variance of Number of customers} &: \text{var}(N) = \frac{\rho}{(1 - \rho)^2}
+\end{align}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{mean\PYZus{}empirical} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{queue\PYZus{}history}\PY{p}{)}
+\PY{n}{mean\PYZus{}analytical} \PY{o}{=} \PY{n}{rho} \PY{o}{/} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{rho}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Analytical mean value : }\PY{l+s+si}{\PYZob{}}\PY{n}{mean\PYZus{}analytical}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ \PYZhy{}\PYZgt{} Observed mean value : }\PY{l+s+si}{\PYZob{}}\PY{n}{mean\PYZus{}empirical}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{var\PYZus{}empirical} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{var}\PY{p}{(}\PY{n}{queue\PYZus{}history}\PY{p}{)}
+\PY{n}{var\PYZus{}analytical} \PY{o}{=} \PY{n}{rho} \PY{o}{/} \PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{rho}\PY{p}{)} \PY{o}{*}\PY{o}{*} \PY{l+m+mi}{2}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Analytical variance : }\PY{l+s+si}{\PYZob{}}\PY{n}{var\PYZus{}analytical}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ \PYZhy{}\PYZgt{} Observed variance : }\PY{l+s+si}{\PYZob{}}\PY{n}{var\PYZus{}empirical}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Analytical mean value : 1.1999999999999997
+ -> Observed mean value : 1.169998
+Analytical variance : 2.6399999999999992
+ -> Observed variance : 2.388344679996
+    \end{Verbatim}
+
+    \begin{itemize}
+\tightlist
+\item
+  Little's Law:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The average number of customers in a queue is equal to the product
+    of the arrival rate times the average time spent in the queue.
+    \begin{align}
+    \bar{N} = \lambda \bar{\tau}
+    \end{align}
+  \end{itemize}
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Average number of customers in the queue = }\PY{l+s+si}{\PYZob{}}\PY{n}{mean\PYZus{}empirical}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lambda * T\PYZus{}avg = }\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{+w}{ }\PY{o}{*}\PY{+w}{ }\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{ind\PYZus{}Times}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Average number of customers in the queue = 1.169998
+lambda * T\_avg = 1.1862075025346406
+    \end{Verbatim}
+
+    \newpage
+    \section{M/M/1/N - Finite buffer case}
+
+\begin{itemize}
+\tightlist
+\item
+  Model Assumptions :
+
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \tightlist
+  \item
+    Poisson arrivals with rate \(\lambda\).
+  \item
+    Exponential service times with rate \(\mu\).
+  \item
+    Single server.
+  \item
+    Upper limit on the size of the queue, \(N\). Any excess customers
+    will be turned away and will never return back to the queue (to
+    maintain the independent arrivals assumption).
+  \end{enumerate}
+\end{itemize}
+
+ \begin{align}
+\rho = \frac{\lambda}{\mu}.
+\end{align}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{m\PYZus{}m\PYZus{}1\PYZus{}N\PYZus{}q}\PY{p}{(}\PY{n}{simTime}\PY{p}{,} \PY{n}{del\PYZus{}t}\PY{p}{,} \PY{n}{arrRate}\PY{p}{,} \PY{n}{depRate}\PY{p}{,} \PY{n}{N}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{} }
+\PY{l+s+sd}{    Function to simulate an M/M/1/N queue.}
+\PY{l+s+sd}{    Just input }
+\PY{l+s+sd}{    1. simTime = Time duration (in seconds) that you would like to simulate the queue for.}
+\PY{l+s+sd}{    2. arrRate = The arrival rate (per unit time)}
+\PY{l+s+sd}{    3. depRate = The departure rate (per unit time)}
+\PY{l+s+sd}{    4. N       = Buffer size}
+\PY{l+s+sd}{    You will get as output 3 lists.}
+\PY{l+s+sd}{    1. The state of the queue at time t = 0, delT, 2delT, 3delT, and so on.}
+\PY{l+s+sd}{    2. The interarrival times.}
+\PY{l+s+sd}{    3. The departure times.    }
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}} 
+    \PY{c+c1}{\PYZsh{} To store the inter\PYZhy{}arrival and inter\PYZhy{}departure times}
+    \PY{n}{intArrTimes} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{intDepTimes} \PY{o}{=} \PY{p}{[}\PY{p}{]} 
+    
+    \PY{c+c1}{\PYZsh{} Timers for arrival and departure}
+    \PY{n}{arrivalTimer} \PY{o}{=} \PY{l+m+mi}{0} 
+    \PY{n}{departureTimer} \PY{o}{=} \PY{l+m+mi}{0} 
+
+    \PY{c+c1}{\PYZsh{} Start with an empty queue}
+    \PY{n}{num\PYZus{}runs} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{simTime} \PY{o}{/} \PY{n}{del\PYZus{}t}\PY{p}{)}
+    \PY{n}{stateHistory} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{num\PYZus{}runs}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{int}\PY{p}{)} 
+    
+    \PY{c+c1}{\PYZsh{} Individual customer timer and tracking ID}
+    \PY{n}{individualTimers} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{customerID} \PY{o}{=} \PY{l+m+mi}{0}                                
+
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{num\PYZus{}runs}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} Flip a coin for arrival  }
+        \PY{k}{if} \PY{n}{stateHistory}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{N}\PY{p}{:}
+            \PY{n}{isArrival} \PY{o}{=} \PY{l+m+mi}{0}                               \PY{c+c1}{\PYZsh{} Queue full : turn down the new arrival(s)}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{isArrival} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{binomial}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{min}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{arrRate} \PY{o}{*} \PY{n}{del\PYZus{}t}\PY{p}{)}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Flip a coin for departure only if there is atleast one customer}
+        \PY{k}{if} \PY{n}{stateHistory}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{l+m+mi}{1}\PY{p}{:}
+            \PY{n}{isDeparture} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{binomial}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{min}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{depRate} \PY{o}{*} \PY{n}{del\PYZus{}t}\PY{p}{)}\PY{p}{)}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{isDeparture} \PY{o}{=} \PY{l+m+mi}{0}
+
+        \PY{c+c1}{\PYZsh{} Update the current state}
+        \PY{n}{stateHistory}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{stateHistory}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{+} \PY{n}{isArrival} \PY{o}{\PYZhy{}} \PY{n}{isDeparture}
+
+        \PY{c+c1}{\PYZsh{} Increment the timers for both arrival and departure}
+        \PY{n}{arrivalTimer} \PY{o}{+}\PY{o}{=} \PY{n}{del\PYZus{}t}
+        \PY{n}{departureTimer} \PY{o}{+}\PY{o}{=} \PY{n}{del\PYZus{}t}
+        
+        \PY{k}{for} \PY{n}{idx} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{customerID}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{individualTimers}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+            \PY{n}{individualTimers}\PY{p}{[}\PY{n}{idx}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n}{del\PYZus{}t}
+        
+        \PY{k}{if} \PY{n}{isArrival}\PY{p}{:}
+            \PY{n}{intArrTimes}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{arrivalTimer}\PY{p}{)}                \PY{c+c1}{\PYZsh{} Record the interarrival time}
+            \PY{n}{arrivalTimer} \PY{o}{=} \PY{l+m+mi}{0}                                \PY{c+c1}{\PYZsh{} Reset the timer for the same}
+            \PY{n}{individualTimers}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}                  \PY{c+c1}{\PYZsh{} Add a timer for the new customer}
+        \PY{c+c1}{\PYZsh{} Similarly for departures}
+        \PY{k}{if} \PY{n}{isDeparture}\PY{p}{:}
+            \PY{n}{intDepTimes}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{departureTimer}\PY{p}{)}                \PY{c+c1}{\PYZsh{} Record the interdeparture time}
+            \PY{n}{departureTimer} \PY{o}{=} \PY{l+m+mi}{0}                                \PY{c+c1}{\PYZsh{} Reset the timer for the same}
+            \PY{n}{customerID} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}                             \PY{c+c1}{\PYZsh{} Take on the next customer for service.}
+
+    \PY{k}{return} \PY{p}{[}\PY{n}{stateHistory}\PY{p}{,} \PY{n}{intArrTimes}\PY{p}{,} \PY{n}{intDepTimes}\PY{p}{,} \PY{n}{individualTimers}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{del\PYZus{}t} \PY{o}{=} \PY{l+m+mi}{10} \PY{o}{*}\PY{o}{*} \PY{o}{\PYZhy{}}\PY{l+m+mi}{3}            \PY{c+c1}{\PYZsh{} smallest time resolution :: in some time units}
+
+\PY{c+c1}{\PYZsh{} del\PYZus{}t = 10 ** \PYZhy{}4            \PYZsh{} Uncomment for better matching of empirical results*     }
+\PY{n}{total\PYZus{}simul\PYZus{}time} \PY{o}{=} \PY{l+m+mi}{1000}     \PY{c+c1}{\PYZsh{} In common time units}
+\PY{n}{arrival\PYZus{}rate} \PY{o}{=} \PY{l+m+mi}{6}            \PY{c+c1}{\PYZsh{} Number of arrivals per unit time}
+\PY{n}{departure\PYZus{}rate} \PY{o}{=} \PY{l+m+mi}{11}         \PY{c+c1}{\PYZsh{} Number of departure per unit time}
+
+\PY{n}{rho} \PY{o}{=} \PY{n}{arrival\PYZus{}rate} \PY{o}{/} \PY{n}{departure\PYZus{}rate}
+
+\PY{c+c1}{\PYZsh{} * making del\PYZus{}t smaller will result in closer matching of the analytical results with empirical ones.}
+\PY{c+c1}{\PYZsh{} However, the simulation time (execution time) of the code increases. It might require upto 2\PYZhy{}3 mins }
+\PY{c+c1}{\PYZsh{} per queue for simluation to complete. }
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{buffer\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{10}                            \PY{c+c1}{\PYZsh{} Buffer size of the queue}
+\PY{n}{queue\PYZus{}history}\PY{p}{,} \PY{n}{arr\PYZus{}Times}\PY{p}{,} \PY{n}{dep\PYZus{}Times}\PY{p}{,} \PY{n}{ind\PYZus{}Times} \PY{o}{=} \PY{n}{m\PYZus{}m\PYZus{}1\PYZus{}N\PYZus{}q}\PY{p}{(}\PY{n}{total\PYZus{}simul\PYZus{}time}\PY{p}{,} \PY{n}{del\PYZus{}t}\PY{p}{,} \PY{n}{arrival\PYZus{}rate}\PY{p}{,} \PY{n}{departure\PYZus{}rate}\PY{p}{,} \PY{n}{buffer\PYZus{}size}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{queue\PYZus{}history}\PY{p}{)}                       \PY{c+c1}{\PYZsh{} Maximum size of the queue at any point in time is atmost buffer\PYZus{}size}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+10
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{itemize}
+\tightlist
+\item
+  Evolution of the state of the system
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{del\PYZus{}t} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{total\PYZus{}simul\PYZus{}time} \PY{o}{/} \PY{n}{del\PYZus{}t}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{queue\PYZus{}history}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{navy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{time}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{State of the system, \PYZdl{}N(t)\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{M/M/1/N with \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{, \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mu = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mm1N\PYZus{}state\PYZus{}history\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.pdf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mm1N\PYZus{}state\PYZus{}history\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.svg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{transparent}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_0.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{itemize}
+\tightlist
+\item
+  Distribution of Inter-Arrival times
+\end{itemize}
+
+Analytical Distribution : Inter-arrival times
+\(\overset{i.i.d}{\sim} \text{Exponential}(\lambda)\)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Ideal PDF of Inter\PYZhy{}arrival times :}
+\PY{n}{t\PYZus{}curr\PYZus{}customer} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n+nb}{max}\PY{p}{(}\PY{n}{arr\PYZus{}Times}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1000}\PY{p}{)}
+\PY{n}{analytical\PYZus{}dist} \PY{o}{=} \PY{n}{arrival\PYZus{}rate} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{arrival\PYZus{}rate} \PY{o}{*} \PY{n}{t\PYZus{}curr\PYZus{}customer}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Plot the analytical line}
+\PY{n}{axes}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{t\PYZus{}curr\PYZus{}customer}\PY{p}{,} \PY{n}{analytical\PYZus{}dist}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{purple}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Analytical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Plot the empirical line}
+\PY{n}{axes}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{arr\PYZus{}Times}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{41}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{edgecolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tan}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{salmon}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Empirical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{time}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}f\PYZus{}T(t)\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{M/M/1/N with \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{, \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mu = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mm1N\PYZus{}interArrivalTime\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.pdf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mm1N\PYZus{}interArrivalTime\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.svg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{transparent}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_29_0.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{itemize}
+\tightlist
+\item
+  State Probabilities
+\end{itemize}
+
+Analytical distribution under equilibrium \(\lambda < \mu\) :
+
+\begin{align}
+    p_n &= \mathbb{P}(\text{system is in state n})\\
+        &=  \frac{(1 - \rho) \rho ^ n}{1 - \rho ^{N /+ 1}}\ &&\quad\ \ldots\ 0 \leq n \leq N, \rho \neq 1\\
+        &=  \frac{1}{N + 1}\ &&\quad\ \ldots\ 0 \leq n \leq N, \rho = 1\\
+\end{align}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{rho} \PY{o}{=} \PY{n}{arrival\PYZus{}rate} \PY{o}{/} \PY{n}{departure\PYZus{}rate}
+\PY{n}{analytical\PYZus{}dist} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{buffer\PYZus{}size}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+    \PY{k}{if} \PY{n}{rho} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{:}
+        \PY{n}{analytical\PYZus{}dist}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{/} \PY{p}{(}\PY{n}{buffer\PYZus{}size} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n}{p\PYZus{}i} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{rho}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{n}{rho} \PY{o}{*}\PY{o}{*} \PY{n}{i}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{p}{(}\PY{n}{rho} \PY{o}{*}\PY{o}{*} \PY{p}{(}\PY{n}{buffer\PYZus{}size}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{analytical\PYZus{}dist}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{p\PYZus{}i}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} First, we will extract the unique states and their respective frequencies:}
+\PY{n}{unique\PYZus{}elements}\PY{p}{,} \PY{n}{counts} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n}{queue\PYZus{}history}\PY{p}{,} \PY{n}{return\PYZus{}counts}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{total\PYZus{}count} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{counts}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{stem}\PY{p}{(}\PY{n}{analytical\PYZus{}dist}\PY{p}{,} \PY{n}{linefmt}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cornflowerblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{basefmt}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cornflowerblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Analytical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{n}{unique\PYZus{}elements}\PY{p}{,} \PY{n}{counts} \PY{o}{/} \PY{n}{total\PYZus{}count}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{midnightblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Empirical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}p\PYZus{}n\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{M/M/1/N with \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{, \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mu = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mm1N\PYZus{}stateProbs\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.pdf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mm1N\PYZus{}stateProbs\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.svg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{transparent}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_31_0.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{itemize}
+\item
+  Blocking probability  \begin{align}
+  \mathbb{P}_{\text{blocking}} = \mathbb{P}(\text{The queue is full}) = p_N
+  \end{align} 
+\item
+  Analytical blocking probability :  \begin{align}
+    p_N &= \mathbb{P}(\text{system is in state n})\\
+        &=  \frac{(1 - \rho) \rho ^ N}{1 - \rho ^{N + 1}}\ &&\quad\ \ldots\ 0 \leq n \leq N, \rho \neq 1\\
+  \end{align} 
+\end{itemize}
+
+\textbf{Note} : For the blocking probability to be observed
+experimentally, it is required that the arrival rate be higher than the
+departure rate as it would lead to the system running at full capacity
+for finite intervals.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Uncomment only if arrival\PYZus{}rate \PYZgt{} departure\PYZus{}rate }
+\PY{n}{N\PYZus{}1} \PY{o}{=} \PY{n}{counts}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Analytical blocking probability = }\PY{l+s+si}{\PYZob{}}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{+w}{ }\PY{o}{\PYZhy{}}\PY{+w}{ }\PY{n}{rho}\PY{p}{)}\PY{+w}{ }\PY{o}{*}\PY{+w}{ }\PY{p}{(}\PY{n}{rho}\PY{+w}{ }\PY{o}{*}\PY{o}{*}\PY{+w}{ }\PY{n}{buffer\PYZus{}size}\PY{p}{)}\PY{p}{)}\PY{+w}{ }\PY{o}{/}\PY{+w}{ }\PY{p}{(}\PY{l+m+mi}{1}\PY{+w}{ }\PY{o}{\PYZhy{}}\PY{+w}{ }\PY{p}{(}\PY{n}{rho}\PY{+w}{ }\PY{o}{*}\PY{o}{*}\PY{+w}{ }\PY{p}{(}\PY{n}{buffer\PYZus{}size}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZgt{} Observed blocking probability = }\PY{l+s+si}{\PYZob{}}\PY{n}{N\PYZus{}1}\PY{+w}{ }\PY{o}{/}\PY{+w}{ }\PY{n}{total\PYZus{}count}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Analytical blocking probability = 0.001061000439230179
+-> Observed blocking probability = 0.000827
+    \end{Verbatim}
+
+    \newpage
+    \section{M/M/\(\infty\) - Infinite server
+system}
+
+\begin{itemize}
+\tightlist
+\item
+  Model Assumptions :
+
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \tightlist
+  \item
+    Poisson arrival process with rate \(\lambda\).
+  \item
+    Exponential service times with rate \(\mu\).
+  \item
+    No limit on queue size.
+  \item
+    \(\infty\) amount of server. Equivalently, there is a personal
+    server for every customer that arrives at the queueing facility.
+  \end{enumerate}
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{m\PYZus{}m\PYZus{}infinite\PYZus{}q}\PY{p}{(}\PY{n}{simTime}\PY{p}{,} \PY{n}{del\PYZus{}t}\PY{p}{,} \PY{n}{arrRate}\PY{p}{,} \PY{n}{depRate}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{} }
+\PY{l+s+sd}{    Function to simulate an M/M/infinity queue.}
+\PY{l+s+sd}{    Just input }
+\PY{l+s+sd}{    1. simTime = Time duration (in seconds) that you would like to simulate the queue for.}
+\PY{l+s+sd}{    2. arrRate = The arrival rate (per unit time)}
+\PY{l+s+sd}{    3. depRate = The departure rate (per unit time)}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    You will get as output 3 lists.}
+\PY{l+s+sd}{    1. The state of the queue at time t = 0, delT, 2delT, 3delT, and so on.}
+\PY{l+s+sd}{    2. The interarrival times.}
+\PY{l+s+sd}{    3. The departure times.    }
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}} 
+    \PY{c+c1}{\PYZsh{} To store the inter\PYZhy{}arrival and inter\PYZhy{}departure times}
+    \PY{n}{intArrTimes} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{intDepTimes} \PY{o}{=} \PY{p}{[}\PY{p}{]} 
+    
+    \PY{c+c1}{\PYZsh{} Timers for arrival and departure}
+    \PY{n}{arrTimer} \PY{o}{=} \PY{l+m+mi}{0} 
+    \PY{n}{depTimer} \PY{o}{=} \PY{l+m+mi}{0} 
+
+    \PY{c+c1}{\PYZsh{} Start with an empty queue}
+    \PY{n}{num\PYZus{}runs} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{simTime} \PY{o}{/} \PY{n}{del\PYZus{}t}\PY{p}{)}
+    \PY{n}{stateHistory} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{num\PYZus{}runs}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{int}\PY{p}{)} 
+    
+    \PY{c+c1}{\PYZsh{} Individual customer timer and tracking ID}
+    \PY{n}{individualTimers} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{customerID} \PY{o}{=} \PY{l+m+mi}{0}                      \PY{c+c1}{\PYZsh{} For tracking purposes}
+    \PY{n}{activeIDs} \PY{o}{=} \PY{p}{[}\PY{p}{]}                      \PY{c+c1}{\PYZsh{} Will keep a record of customers currently at the server }
+
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{num\PYZus{}runs}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} Flip a coin for arrival}
+        \PY{n}{isArrival} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{binomial}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{min}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{arrRate} \PY{o}{*} \PY{n}{del\PYZus{}t}\PY{p}{)}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Flip a coin for departure only if there is atleast 1 customer}
+        \PY{k}{if} \PY{n}{stateHistory}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{l+m+mi}{1}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Create a departures list}
+            \PY{n}{isDepartures} \PY{o}{=} \PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{binomial}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{min}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{depRate} \PY{o}{*} \PY{n}{del\PYZus{}t}\PY{p}{)}\PY{p}{)} \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{stateHistory}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{]}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{isDepartures} \PY{o}{=} \PY{p}{[}\PY{p}{]} 
+        
+        \PY{c+c1}{\PYZsh{} Update the current state}
+        \PY{n}{stateHistory}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{stateHistory}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{+} \PY{n}{isArrival} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{isDepartures}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Increment the timers for arrival }
+        \PY{n}{arrTimer} \PY{o}{+}\PY{o}{=} \PY{n}{del\PYZus{}t}
+        \PY{k}{for} \PY{n}{idx} \PY{o+ow}{in} \PY{n}{activeIDs}\PY{p}{:}
+            \PY{n}{individualTimers}\PY{p}{[}\PY{n}{idx}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n}{del\PYZus{}t}
+        
+        \PY{c+c1}{\PYZsh{} Similarly for departures}
+        \PY{n}{depTimer} \PY{o}{+}\PY{o}{=} \PY{n}{del\PYZus{}t}
+        \PY{k}{if} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{isDepartures}\PY{p}{)}\PY{p}{:}
+            \PY{n}{intDepTimes}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{depTimer}\PY{p}{)}
+            \PY{n}{depTimer} \PY{o}{=} \PY{l+m+mi}{0}                    \PY{c+c1}{\PYZsh{} Reset the timer  }
+        
+        \PY{c+c1}{\PYZsh{} Keep only the unserved IDs in the active ID list}
+        \PY{n}{tempIDs} \PY{o}{=} \PY{p}{[}\PY{n}{activeIDs}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{isDepartures}\PY{p}{)}\PY{p}{)} \PY{k}{if} \PY{n}{isDepartures}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{]}
+        \PY{n}{activeIDs} \PY{o}{=} \PY{n}{tempIDs}
+        
+        \PY{c+c1}{\PYZsh{} If there was an arrival record the Inter\PYZhy{}arrival time and clear the timer (restart)}
+        \PY{k}{if} \PY{n}{isArrival}\PY{p}{:}
+            \PY{n}{intArrTimes}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{arrTimer}\PY{p}{)}
+            \PY{n}{arrTimer} \PY{o}{=} \PY{l+m+mi}{0}
+            \PY{n}{individualTimers}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}      \PY{c+c1}{\PYZsh{} Add a new customer timer}
+            \PY{n}{activeIDs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{customerID}\PY{p}{)}    \PY{c+c1}{\PYZsh{} Add him to the activeIDs}
+            \PY{n}{customerID} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}                 \PY{c+c1}{\PYZsh{} Next customerID}
+    
+    \PY{k}{return} \PY{p}{[}\PY{n}{stateHistory}\PY{p}{,} \PY{n}{intArrTimes}\PY{p}{,} \PY{n}{intDepTimes}\PY{p}{,} \PY{n}{individualTimers}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{del\PYZus{}t} \PY{o}{=} \PY{l+m+mi}{10} \PY{o}{*}\PY{o}{*} \PY{o}{\PYZhy{}}\PY{l+m+mi}{3}                    \PY{c+c1}{\PYZsh{} smallest time resolution :: in some time units}
+
+\PY{c+c1}{\PYZsh{} del\PYZus{}t = 10 ** \PYZhy{}4                      \PYZsh{} Uncomment for better matching of empirical results*     }
+\PY{n}{total\PYZus{}simul\PYZus{}time} \PY{o}{=} \PY{l+m+mi}{1000}             \PY{c+c1}{\PYZsh{} In common time units}
+\PY{n}{arrival\PYZus{}rate} \PY{o}{=} \PY{l+m+mi}{15}                   \PY{c+c1}{\PYZsh{} Number of arrivals per unit time}
+\PY{n}{departure\PYZus{}rate} \PY{o}{=} \PY{l+m+mi}{11}                 \PY{c+c1}{\PYZsh{} Number of departure per unit time}
+
+\PY{n}{rho} \PY{o}{=} \PY{n}{arrival\PYZus{}rate} \PY{o}{/} \PY{n}{departure\PYZus{}rate}
+
+\PY{c+c1}{\PYZsh{} * making del\PYZus{}t smaller will result in closer matching of the analytical results with empirical ones.}
+\PY{c+c1}{\PYZsh{} However, the simulation time (execution time) of the code increases. It might require upto 2\PYZhy{}3 mins }
+\PY{c+c1}{\PYZsh{} per queue for simluation to complete. }
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{queue\PYZus{}history}\PY{p}{,} \PY{n}{arr\PYZus{}Times}\PY{p}{,} \PY{n}{dep\PYZus{}Times}\PY{p}{,} \PY{n}{ind\PYZus{}Times} \PY{o}{=} \PY{n}{m\PYZus{}m\PYZus{}infinite\PYZus{}q}\PY{p}{(}\PY{n}{total\PYZus{}simul\PYZus{}time}\PY{p}{,} \PY{n}{del\PYZus{}t}\PY{p}{,} \PY{n}{arrival\PYZus{}rate}\PY{p}{,} \PY{n}{departure\PYZus{}rate}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{itemize}
+\tightlist
+\item
+  Evolution of the state of the system
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{del\PYZus{}t} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{total\PYZus{}simul\PYZus{}time} \PY{o}{/} \PY{n}{del\PYZus{}t}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{queue\PYZus{}history}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{navy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{time}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{State of the system, \PYZdl{}N(t)\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{M/M/\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{infty\PYZdl{} with \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{, \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mu = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mmInf\PYZus{}state\PYZus{}history\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.pdf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mmInf\PYZus{}state\PYZus{}history\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.svg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{transparent}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_39_0.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{itemize}
+\tightlist
+\item
+  Distribution of Inter-Arrival times
+\end{itemize}
+
+Analytical distribution : Inter-arrival times
+\(\overset{i.i.d}{\sim} \text{Exponential}(\lambda)\)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Ideal PDF of Inter\PYZhy{}arrival times :}
+\PY{n}{t\PYZus{}curr\PYZus{}customer} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{arr\PYZus{}Times}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1000}\PY{p}{)}
+\PY{n}{analytical\PYZus{}dist} \PY{o}{=} \PY{n}{arrival\PYZus{}rate} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{arrival\PYZus{}rate} \PY{o}{*} \PY{n}{t\PYZus{}curr\PYZus{}customer}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Plot the ideal line}
+\PY{n}{axes}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{t\PYZus{}curr\PYZus{}customer}\PY{p}{,} \PY{n}{analytical\PYZus{}dist}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{purple}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Analytical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Plot the empirical line}
+\PY{n}{axes}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{arr\PYZus{}Times}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{41}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{edgecolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tan}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{salmon}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Empirical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{time}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}f\PYZus{}T(t)\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{M/M/\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{infty\PYZdl{} with \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{, \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mu = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mmInf\PYZus{}interArrivalTime\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.pdf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mmInf\PYZus{}interArrivalTime\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.svg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{transparent}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_41_0.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{itemize}
+\tightlist
+\item
+  State Probabilities
+\end{itemize}
+
+Analytical state probabilities at equilibrium (\(\lambda < \mu\)).
+\begin{align}
+ p_n &= \mathbb{P}(\text{system is in state }n) \\
+ &= \frac{\rho^n}{n!} e^{-\rho}\ &&\quad\ \ldots\ n \geq 0.\\
+ \text{where, } \rho &= \frac{\lambda}{\mu} 
+\end{align}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{rho} \PY{o}{=} \PY{n}{arrival\PYZus{}rate} \PY{o}{/} \PY{n}{departure\PYZus{}rate}
+\PY{n}{analytical\PYZus{}dist} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{25}\PY{p}{)}\PY{p}{:}
+    \PY{n}{p\PYZus{}i} \PY{o}{=} \PY{p}{(}\PY{n}{rho} \PY{o}{*}\PY{o}{*} \PY{n}{i}\PY{p}{)} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{rho}\PY{p}{)} \PY{o}{/} \PY{n}{factorial}\PY{p}{(}\PY{n}{i}\PY{p}{)}
+    \PY{n}{analytical\PYZus{}dist}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{p\PYZus{}i}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} First, we will extract the unique states and their respective frequencies:}
+\PY{n}{unique\PYZus{}elements}\PY{p}{,} \PY{n}{counts} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n}{queue\PYZus{}history}\PY{p}{,} \PY{n}{return\PYZus{}counts}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{total\PYZus{}count} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{counts}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{stem}\PY{p}{(}\PY{n}{analytical\PYZus{}dist}\PY{p}{,} \PY{n}{linefmt}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cornflowerblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{basefmt}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cornflowerblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Analytical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{n}{unique\PYZus{}elements}\PY{p}{,} \PY{n}{counts} \PY{o}{/} \PY{n}{total\PYZus{}count}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{midnightblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Empirical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}p\PYZus{}n\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{M/M/\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{infty\PYZdl{} with \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{, \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mu = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mmInf\PYZus{}stateProbs\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.pdf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mmInf\PYZus{}stateProbs\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.svg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{transparent}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_43_0.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{itemize}
+\tightlist
+\item
+  Average number of customers and Variance of number of customers
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{mean\PYZus{}empirical} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{queue\PYZus{}history}\PY{p}{)}
+\PY{n}{mean\PYZus{}analytical} \PY{o}{=} \PY{n}{rho} 
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Expected mean value : }\PY{l+s+si}{\PYZob{}}\PY{n}{mean\PYZus{}analytical}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ \PYZhy{}\PYZgt{} Observed mean value : }\PY{l+s+si}{\PYZob{}}\PY{n}{mean\PYZus{}empirical}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{var\PYZus{}empirical} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{var}\PY{p}{(}\PY{n}{queue\PYZus{}history}\PY{p}{)}
+\PY{n}{var\PYZus{}analytical} \PY{o}{=} \PY{n}{rho} 
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Expected variance : }\PY{l+s+si}{\PYZob{}}\PY{n}{var\PYZus{}analytical}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ \PYZhy{}\PYZgt{} Observed variance : }\PY{l+s+si}{\PYZob{}}\PY{n}{var\PYZus{}empirical}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Expected mean value : 1.3636363636363635
+ -> Observed mean value : 1.35687
+Expected variance : 1.3636363636363635
+ -> Observed variance : 1.3412578031000004
+    \end{Verbatim}
+
+    \begin{itemize}
+\tightlist
+\item
+  Departure time (per user) distribution:
+\end{itemize}
+
+In this case, since a customer need not wait in a queue and directly
+goes into service, it is expected that the time spent in the
+\texttt{queueing\ facility} is distributed as
+\(\text{Exponential}(\mu)\).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Analytical Distribution:}
+\PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1000}\PY{p}{)}      
+\PY{n}{y} \PY{o}{=} \PY{n}{departure\PYZus{}rate} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{departure\PYZus{}rate} \PY{o}{*} \PY{n}{x}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{salmon}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Analytical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{ind\PYZus{}Times}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{41}\PY{p}{,} \PY{n}{edgecolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{black}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maroon}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Empirical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}t\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}f\PYZus{}T(t)\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{M/M/\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{infty\PYZdl{} with \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{, \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mu = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mmInf\PYZus{}response\PYZus{}time\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.pdf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mmInf\PYZus{}response\PYZus{}time\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.svg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{transparent}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_47_0.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \newpage
+    \section{M/M/m - Multiple but Finite
+Servers}
+\begin{itemize}
+\tightlist
+\item
+  Model Assumptions :
+
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \tightlist
+  \item
+    Poisson arrival process with rate \(\lambda\).
+  \item
+    Exponential service time with rate \(\mu\).
+  \item
+    No limit on the queue size.
+  \item
+    \(m\) servers available.
+  \end{enumerate}
+\end{itemize}
+Letting,
+\begin{align}
+\rho &= \frac{\lambda}{\mu} \\
+\rho' &= \frac{\lambda}{m\mu} 
+\end{align} 
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{m\PYZus{}m\PYZus{}m\PYZus{}q}\PY{p}{(}\PY{n}{simTime}\PY{p}{,} \PY{n}{del\PYZus{}t}\PY{p}{,} \PY{n}{arrRate}\PY{p}{,} \PY{n}{depRate}\PY{p}{,} \PY{n}{numServers}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{} }
+\PY{l+s+sd}{    Function to simulate an M/M/m queue.}
+\PY{l+s+sd}{    Just input }
+\PY{l+s+sd}{    1. simTime = Time duration (in seconds) that you would like to simulate the queue for.}
+\PY{l+s+sd}{    2. arrRate = The arrival rate (per unit time)}
+\PY{l+s+sd}{    3. depRate = The departure rate (per unit time)}
+\PY{l+s+sd}{    4. numServers = Number of servers in the system}
+
+\PY{l+s+sd}{    You will get as output 3 lists.}
+\PY{l+s+sd}{    1. The state of the queue at time t = 0, delT, 2delT, 3delT, and so on.}
+\PY{l+s+sd}{    2. The interarrival times.}
+\PY{l+s+sd}{    3. The departure times.    }
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}} 
+    \PY{c+c1}{\PYZsh{} To store the inter\PYZhy{}arrival and inter\PYZhy{}departure times}
+    \PY{n}{intArrTimes} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{intDepTimes} \PY{o}{=} \PY{p}{[}\PY{p}{]} 
+    
+    \PY{c+c1}{\PYZsh{} Timers for arrival and departure}
+    \PY{n}{arrTimer} \PY{o}{=} \PY{l+m+mi}{0} 
+    \PY{n}{depTimer} \PY{o}{=} \PY{l+m+mi}{0} 
+
+    \PY{c+c1}{\PYZsh{} Start with an empty queue}
+    \PY{n}{num\PYZus{}runs} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{simTime} \PY{o}{/} \PY{n}{del\PYZus{}t}\PY{p}{)}
+    \PY{n}{stateHistory} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{num\PYZus{}runs}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{int}\PY{p}{)} 
+    
+    \PY{c+c1}{\PYZsh{} Individual customer timer and tracking ID}
+    \PY{n}{individualTimers} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{customerID} \PY{o}{=} \PY{l+m+mi}{0}                        \PY{c+c1}{\PYZsh{} For tracking purposes}
+    \PY{n}{activeIDs} \PY{o}{=} \PY{p}{[}\PY{p}{]}                        \PY{c+c1}{\PYZsh{} A record of customers currently being served}
+    \PY{n}{waitingIDs} \PY{o}{=} \PY{p}{[}\PY{p}{]}                       \PY{c+c1}{\PYZsh{} A record of customers in the waiting \PYZdq{}room\PYZdq{}}
+
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{num\PYZus{}runs}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} Flip a coin for arrival}
+        \PY{n}{isArrival} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{binomial}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{min}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{arrRate} \PY{o}{*} \PY{n}{del\PYZus{}t}\PY{p}{)}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Flip a coin for departure only if there is atleast 1 customer}
+        \PY{k}{if} \PY{n}{stateHistory}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{l+m+mi}{1}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Create a departures list of indices}
+            \PY{n}{isDepartures} \PY{o}{=} \PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{binomial}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{min}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{depRate} \PY{o}{*} \PY{n}{del\PYZus{}t}\PY{p}{)}\PY{p}{)} \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{activeIDs}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{isDepartures} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+        
+        \PY{c+c1}{\PYZsh{} Update the current state}
+        \PY{n}{stateHistory}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{stateHistory}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{+} \PY{n}{isArrival} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{isDepartures}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Increment the timers for both arrival and departure}
+        \PY{n}{arrTimer} \PY{o}{+}\PY{o}{=} \PY{n}{del\PYZus{}t}
+        \PY{k}{for} \PY{n}{idx} \PY{o+ow}{in} \PY{n}{activeIDs}\PY{p}{:}
+            \PY{n}{individualTimers}\PY{p}{[}\PY{n}{idx}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n}{del\PYZus{}t}
+
+        \PY{n}{depTimer} \PY{o}{+}\PY{o}{=} \PY{n}{del\PYZus{}t}
+        \PY{k}{if} \PY{n}{isDepartures}\PY{p}{:}
+            \PY{n}{intDepTimes}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{depTimer}\PY{p}{)}        \PY{c+c1}{\PYZsh{} Record the inter\PYZhy{}departure time }
+            \PY{n}{depTimer} \PY{o}{=} \PY{l+m+mi}{0}                        \PY{c+c1}{\PYZsh{} Reset the timer}
+
+        \PY{c+c1}{\PYZsh{} Keep only the unserved IDs in the active ID list}
+        \PY{n}{tempIDs} \PY{o}{=} \PY{p}{[}\PY{n}{activeIDs}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{isDepartures}\PY{p}{)}\PY{p}{)} \PY{k}{if} \PY{n}{isDepartures}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{]}
+        \PY{n}{activeIDs} \PY{o}{=} \PY{n}{tempIDs}
+        
+        \PY{c+c1}{\PYZsh{} If there was an arrival }
+        \PY{k}{if} \PY{n}{isArrival}\PY{p}{:}
+            \PY{n}{intArrTimes}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{arrTimer}\PY{p}{)}        \PY{c+c1}{\PYZsh{} Record the Inter\PYZhy{}arrival time}
+            \PY{n}{arrTimer} \PY{o}{=} \PY{l+m+mi}{0}                        \PY{c+c1}{\PYZsh{} Reset the timer}
+            \PY{n}{individualTimers}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}          \PY{c+c1}{\PYZsh{} Add a custom timer for the new customer}
+
+            \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{activeIDs}\PY{p}{)} \PY{o}{==} \PY{n}{numServers} \PY{p}{:}
+            \PY{c+c1}{\PYZsh{} No free server :: Put the arrival in the waiting room }
+                \PY{n}{waitingIDs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{customerID}\PY{p}{)}
+            \PY{k}{else}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Send to a free server}
+                \PY{n}{activeIDs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{customerID}\PY{p}{)}
+            \PY{n}{customerID} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+
+    \PY{k}{return} \PY{p}{[}\PY{n}{stateHistory}\PY{p}{,} \PY{n}{intArrTimes}\PY{p}{,} \PY{n}{intDepTimes}\PY{p}{,} \PY{n}{individualTimers}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{del\PYZus{}t} \PY{o}{=} \PY{l+m+mi}{10} \PY{o}{*}\PY{o}{*} \PY{o}{\PYZhy{}}\PY{l+m+mi}{3}                    \PY{c+c1}{\PYZsh{} smallest time resolution :: in some time units}
+
+\PY{c+c1}{\PYZsh{} del\PYZus{}t = 10 ** \PYZhy{}4                      \PYZsh{} Uncomment for better matching of empirical results*     }
+\PY{n}{total\PYZus{}simul\PYZus{}time} \PY{o}{=} \PY{l+m+mi}{1000}             \PY{c+c1}{\PYZsh{} In common time units}
+\PY{n}{arrival\PYZus{}rate} \PY{o}{=} \PY{l+m+mi}{6}                   \PY{c+c1}{\PYZsh{} Number of arrivals per unit time}
+\PY{n}{departure\PYZus{}rate} \PY{o}{=} \PY{l+m+mi}{11}                 \PY{c+c1}{\PYZsh{} Number of departure per unit time}
+
+
+\PY{c+c1}{\PYZsh{} * making del\PYZus{}t smaller will result in closer matching of the analytical results with empirical ones.}
+\PY{c+c1}{\PYZsh{} However, the simulation time (execution time) of the code increases. It might require upto 2\PYZhy{}3 mins }
+\PY{c+c1}{\PYZsh{} per queue for simluation to complete. }
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{num\PYZus{}servers} \PY{o}{=} \PY{l+m+mi}{5} 
+\PY{n}{queue\PYZus{}history}\PY{p}{,} \PY{n}{arr\PYZus{}Times}\PY{p}{,} \PY{n}{dep\PYZus{}Times}\PY{p}{,} \PY{n}{ind\PYZus{}Times} \PY{o}{=} \PY{n}{m\PYZus{}m\PYZus{}m\PYZus{}q}\PY{p}{(}\PY{n}{total\PYZus{}simul\PYZus{}time}\PY{p}{,} \PY{n}{del\PYZus{}t}\PY{p}{,} \PY{n}{arrival\PYZus{}rate}\PY{p}{,} \PY{n}{departure\PYZus{}rate}\PY{p}{,} \PY{n}{num\PYZus{}servers}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{itemize}
+\tightlist
+\item
+  Evolution of the state of the system
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{del\PYZus{}t} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{total\PYZus{}simul\PYZus{}time} \PY{o}{/} \PY{n}{del\PYZus{}t}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{queue\PYZus{}history}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{navy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{time}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{State of the system, \PYZdl{}N(t)\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{M/M/m with \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{, \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mu = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mmm\PYZus{}state\PYZus{}history\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.pdf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mmm\PYZus{}state\PYZus{}history\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.svg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{transparent}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_53_0.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{itemize}
+\tightlist
+\item
+  Distribution of Inter-Arrival times
+\end{itemize}
+
+Analytical Distribution : Inter-Arrival Times
+\(\overset{i.i.d}{\sim} \text{Exponential}(\lambda)\)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Analytical PDF of Inter\PYZhy{}arrival times :}
+\PY{n}{t\PYZus{}curr\PYZus{}customer} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1000}\PY{p}{)}
+\PY{n}{analytical\PYZus{}dist} \PY{o}{=} \PY{n}{arrival\PYZus{}rate} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{arrival\PYZus{}rate} \PY{o}{*} \PY{n}{t\PYZus{}curr\PYZus{}customer}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Plot the analytical PDF}
+\PY{n}{axes}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{t\PYZus{}curr\PYZus{}customer}\PY{p}{,} \PY{n}{analytical\PYZus{}dist}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{purple}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Analytical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Plot the empirical line}
+\PY{n}{axes}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{arr\PYZus{}Times}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{41}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{edgecolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tan}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{salmon}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Empirical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{time}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}f\PYZus{}T(t)\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{M/M/m with \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{, \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mu = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mmm\PYZus{}interArrivalTime\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.pdf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mmm\PYZus{}interArrivalTime\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.svg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{transparent}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_55_0.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{itemize}
+\tightlist
+\item
+  State Probabilities (in equilibrium)
+\end{itemize}
+
+\begin{align} 
+            p_0 &= \left[ 1 + \sum_{n=1}^{m-1} \frac{1}{n!} \left( \frac{\lambda}{\mu} \right)^n + \sum_{n=m}^{\infty} \frac{1}{m^{n-m}} \frac{1}{m!} \left( \frac{\lambda}{\mu} \right)^n \right]^{-1}\\
+            p_n &= \frac{\lambda^n}{n! \mu^n} p_0 \quad \text{if} \ 1 \leq n < m\\
+            p_n &= \frac{\lambda^n}{m^{n-m} m! \mu^n} p_0 \quad \text{if} \ n \geq m.
+\end{align}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{32}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{rho} \PY{o}{=} \PY{n}{arrival\PYZus{}rate} \PY{o}{/} \PY{n}{departure\PYZus{}rate}
+\PY{n}{rho\PYZus{}prime} \PY{o}{=} \PY{n}{arrival\PYZus{}rate} \PY{o}{/} \PY{p}{(}\PY{n}{num\PYZus{}servers} \PY{o}{*} \PY{n}{departure\PYZus{}rate}\PY{p}{)}
+\PY{n}{analytical\PYZus{}dist} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{p\PYZus{}0\PYZus{}inv} \PY{o}{=} \PY{l+m+mi}{1}
+\PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{num\PYZus{}servers}\PY{p}{)}\PY{p}{:}
+    \PY{n}{p\PYZus{}0\PYZus{}inv} \PY{o}{+}\PY{o}{=} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{/} \PY{n}{factorial}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{n}{rho} \PY{o}{*}\PY{o}{*} \PY{n}{n}\PY{p}{)}
+\PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}servers}\PY{p}{,} \PY{l+m+mi}{2} \PY{o}{*}\PY{o}{*} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Hopefully the sum will converge }
+    \PY{n}{p\PYZus{}0\PYZus{}inv} \PY{o}{+}\PY{o}{=} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{/} \PY{p}{(}\PY{n}{num\PYZus{}servers} \PY{o}{*}\PY{o}{*} \PY{p}{(}\PY{n}{n} \PY{o}{\PYZhy{}} \PY{n}{num\PYZus{}servers}\PY{p}{)}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{/} \PY{n}{factorial}\PY{p}{(}\PY{n}{num\PYZus{}servers}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{n}{rho} \PY{o}{*}\PY{o}{*} \PY{n}{n}\PY{p}{)}
+
+\PY{n}{p\PYZus{}0} \PY{o}{=} \PY{l+m+mi}{1} \PY{o}{/} \PY{n}{p\PYZus{}0\PYZus{}inv}
+
+\PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}servers}\PY{p}{)}\PY{p}{:}
+    \PY{n}{p\PYZus{}i} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{/} \PY{n}{factorial}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{n}{rho} \PY{o}{*}\PY{o}{*} \PY{n}{n}\PY{p}{)} \PY{o}{*} \PY{n}{p\PYZus{}0}
+    \PY{n}{analytical\PYZus{}dist}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{p\PYZus{}i}\PY{p}{)}
+\PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}servers}\PY{p}{,} \PY{l+m+mi}{25}\PY{p}{)}\PY{p}{:}
+    \PY{n}{p\PYZus{}i} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{/} \PY{p}{(}\PY{n}{num\PYZus{}servers} \PY{o}{*}\PY{o}{*} \PY{p}{(}\PY{n}{n} \PY{o}{\PYZhy{}} \PY{n}{num\PYZus{}servers}\PY{p}{)}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{/} \PY{n}{factorial}\PY{p}{(}\PY{n}{num\PYZus{}servers}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{n}{rho} \PY{o}{*}\PY{o}{*} \PY{n}{n}\PY{p}{)} \PY{o}{*} \PY{n}{p\PYZus{}0}
+    \PY{n}{analytical\PYZus{}dist}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{p\PYZus{}i}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} First, we will extract the unique states and their respective frequencies:}
+\PY{n}{unique\PYZus{}elements}\PY{p}{,} \PY{n}{counts} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n}{queue\PYZus{}history}\PY{p}{,} \PY{n}{return\PYZus{}counts}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{total\PYZus{}count} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{counts}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{stem}\PY{p}{(}\PY{n}{analytical\PYZus{}dist}\PY{p}{,} \PY{n}{linefmt}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cornflowerblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{basefmt}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cornflowerblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Analytical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{n}{unique\PYZus{}elements}\PY{p}{,} \PY{n}{counts} \PY{o}{/} \PY{n}{total\PYZus{}count}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{midnightblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Empirical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}p\PYZus{}n\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{M/M/m with \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{, \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mu = \PYZdl{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mmm\PYZus{}stateProbs\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.pdf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulation\PYZus{}results/mmm\PYZus{}stateProbs\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{arrival\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}}\PY{n}{departure\PYZus{}rate}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.svg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{transparent}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_57_0.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \newpage
+    \section{M/G/1 Queue}
+
+\begin{itemize}
+\tightlist
+\item
+  Model Assumptions:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Poisson Arrivals with rate \(\lambda\).
+  \item
+    Service times are distributed arbitrarily but with rate \(\mu\).
+  \item
+    Single server.
+  \item
+    No limits on queue length.
+  \end{itemize}
+\item
+  Analytical Results
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(\text{Pollaczek-Khinchin Mean Value Formula}\)
+  \item
+    Let \(\rho = \frac{\lambda}{\mu}\). 
+    \begin{align}
+      \mathbb{E}[n] = \frac{2\rho - \rho^2 + \lambda^2 \sigma_s^2}{2 (1 - \rho)}
+      \end{align}
+  \end{itemize}
+\item
+  Implementation Details
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Slightly different approach from the previous queues has been taken.
+  \item
+    The modeling of the queue has been started from generating
+    stochastic times or arrival and service. According to these times,
+    the state of the queue, i.e., the number of customers in the queue
+    have been found after every departure.
+  \item
+    For simplicity, only the
+    \(\text{Pollaczek-Khinchin Mean Value Formula}\) has been verified.
+    While I am plotting the state probabilities, I will not be comparing
+    them with the analytical results obtained in the transform domain.
+  \end{itemize}
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{m\PYZus{}g\PYZus{}1\PYZus{}q}\PY{p}{(}\PY{n}{numTotalCustomers}\PY{p}{,} \PY{n}{arrRate}\PY{p}{,} \PY{n}{servDist}\PY{p}{,} \PY{n}{distParams}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Function to simulate an M/G/1 queue :}
+\PY{l+s+sd}{    numTotalCustomers = Duration of the simulation = In number of customers}
+\PY{l+s+sd}{    arrRate           = Parameter of exponential arrival distribution}
+\PY{l+s+sd}{    depRate           = Parameter of service distribution }
+\PY{l+s+sd}{    servDist          = \PYZsq{}exponential\PYZsq{}, \PYZsq{}deterministic\PYZsq{}, \PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    distParams*       = Parameters of the distribution of sevice times.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{c+c1}{\PYZsh{} Generate the interarrival times :: Markovian Process}
+    \PY{n}{intArrTimes} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{exponential}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{arrRate}\PY{p}{,} \PY{n}{numTotalCustomers}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Arrival time stamps (Observation begins when first customer arrives)}
+    \PY{n}{arrTimeStamps} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{cumsum}\PY{p}{(}\PY{n}{intArrTimes}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Service Times for each of the customers }
+    \PY{k}{if} \PY{n}{servDist} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{exponential}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}
+        \PY{n}{indServiceTimes} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{exponential}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{distParams}\PY{p}{,} \PY{n}{numTotalCustomers}\PY{p}{)}
+    \PY{k}{elif} \PY{n}{servDist} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{deterministic}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}   
+        \PY{n}{indServiceTimes} \PY{o}{=} \PY{n}{distParams} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n}{numTotalCustomers}\PY{p}{)}
+    \PY{k}{elif} \PY{n}{servDist} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gamma}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}   
+        \PY{n}{indServiceTimes} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{gamma}\PY{p}{(}\PY{n}{distParams}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{distParams}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{numTotalCustomers}\PY{p}{)}
+    \PY{k}{elif} \PY{n}{servDist} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{uniform}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} 
+        \PY{n}{indServiceTimes} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{uniform}\PY{p}{(}\PY{n}{distParams}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{distParams}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{numTotalCustomers}\PY{p}{)}
+    \PY{k}{else} \PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Error: Service Time distribution not available.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{k}{return} \PY{k+kc}{None}
+
+    \PY{c+c1}{\PYZsh{} Finding the time stamp at which each person departed}
+    \PY{n}{depTimeStamps} \PY{o}{=} \PY{p}{[}\PY{n}{indServiceTimes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{numTotalCustomers}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} if arrTimeStamps[i] \PYZgt{} depTimeStamps[i \PYZhy{} 1] :}
+        \PY{c+c1}{\PYZsh{}     depTimeStamps.append(arrTimeStamps[i] + indServiceTimes[i])}
+        \PY{c+c1}{\PYZsh{} else:}
+        \PY{c+c1}{\PYZsh{}     depTimeStamps.append(depTimeStamps[i\PYZhy{}1] + indServiceTimes[i])}
+        \PY{n}{depTimeStamps}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb}{max}\PY{p}{(}\PY{n}{arrTimeStamps}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{depTimeStamps}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)} \PY{o}{+} \PY{n}{indServiceTimes}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}
+
+    \PY{n}{stateHistory} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{dep\PYZus{}time} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{depTimeStamps}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} Count arrivals before the current departure time}
+        \PY{n}{arrivals\PYZus{}before\PYZus{}dep} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{l+m+mi}{1} \PY{k}{for} \PY{n}{arr\PYZus{}time} \PY{o+ow}{in} \PY{n}{arrTimeStamps} \PY{k}{if} \PY{n}{arr\PYZus{}time} \PY{o}{\PYZlt{}} \PY{n}{dep\PYZus{}time}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Calculate number of people still in the queue after each departure}
+        \PY{n}{stateHistory}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{arrivals\PYZus{}before\PYZus{}dep} \PY{o}{\PYZhy{}} \PY{n}{i} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}
+
+    \PY{k}{return} \PY{p}{[}\PY{n}{stateHistory}\PY{p}{,} \PY{n}{intArrTimes}\PY{p}{,} \PY{n}{indServiceTimes}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Auxilary functions}
+\PY{k}{def} \PY{n+nf}{argmax\PYZus{}less\PYZus{}than}\PY{p}{(}\PY{n}{searchArr}\PY{p}{,} \PY{n}{threshold}\PY{p}{)}\PY{p}{:}
+    \PY{n}{max\PYZus{}value} \PY{o}{=} \PY{k+kc}{None}
+    \PY{n}{max\PYZus{}index} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+    
+    \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{element} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{searchArr}\PY{p}{)}\PY{p}{:}
+        \PY{k}{if} \PY{n}{element} \PY{o}{\PYZlt{}} \PY{n}{threshold}\PY{p}{:} 
+            \PY{k}{if} \PY{n}{max\PYZus{}value} \PY{o+ow}{is} \PY{k+kc}{None} \PY{o+ow}{or} \PY{n}{element} \PY{o}{\PYZgt{}} \PY{n}{max\PYZus{}value}\PY{p}{:}
+                \PY{n}{max\PYZus{}value} \PY{o}{=} \PY{n}{element}
+                \PY{n}{max\PYZus{}index} \PY{o}{=} \PY{n}{i}
+    
+    \PY{k}{return} \PY{n}{max\PYZus{}index}
+
+\PY{k}{def} \PY{n+nf}{PolkChinMVformula}\PY{p}{(}\PY{n}{rho}\PY{p}{,} \PY{n}{lmbda}\PY{p}{,} \PY{n}{sig2}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{} }
+\PY{l+s+sd}{    Function to calculate the Pollaczek\PYZhy{}Khinchin Mean Value Formula.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{numerator} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{rho}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{p}{(}\PY{n}{rho} \PY{o}{*}\PY{o}{*} \PY{l+m+mi}{2}\PY{p}{)} \PY{o}{+} \PY{p}{(}\PY{p}{(}\PY{n}{lmbda} \PY{o}{*}\PY{o}{*} \PY{l+m+mi}{2}\PY{p}{)} \PY{o}{*} \PY{n}{sig2}\PY{p}{)}
+    \PY{n}{denominator} \PY{o}{=} \PY{l+m+mi}{2} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{rho}\PY{p}{)}
+    \PY{k}{return} \PY{n}{numerator} \PY{o}{/} \PY{n}{denominator}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{del\PYZus{}t} \PY{o}{=} \PY{l+m+mi}{10} \PY{o}{*}\PY{o}{*} \PY{o}{\PYZhy{}}\PY{l+m+mi}{3}                        \PY{c+c1}{\PYZsh{} smallest time resolution :: in some time units}
+
+\PY{c+c1}{\PYZsh{} del\PYZus{}t = 10 ** \PYZhy{}4                      \PYZsh{} Uncomment for better matching of empirical results*     }
+\PY{n}{total\PYZus{}simul\PYZus{}time} \PY{o}{=} \PY{l+m+mi}{1000}                 \PY{c+c1}{\PYZsh{} In common time units}
+\PY{n}{arrival\PYZus{}rate} \PY{o}{=} \PY{l+m+mi}{6}                        \PY{c+c1}{\PYZsh{} Number of arrivals per unit time}
+\PY{n}{departure\PYZus{}rate} \PY{o}{=} \PY{l+m+mi}{11}                     \PY{c+c1}{\PYZsh{} Number of departures per unit time}
+
+\PY{n}{rho} \PY{o}{=} \PY{n}{arrival\PYZus{}rate} \PY{o}{/} \PY{n}{departure\PYZus{}rate}
+
+\PY{c+c1}{\PYZsh{} * Making del\PYZus{}t smaller will result in a closer match of the analytical results with empirical ones.}
+\PY{c+c1}{\PYZsh{} However, the simulation time (execution time) of the code increases. It might require 2\PYZhy{}3 mins }
+\PY{c+c1}{\PYZsh{} per queue for simulation to complete. }
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{num\PYZus{}customers\PYZus{}obs} \PY{o}{=} \PY{l+m+mi}{10} \PY{o}{*}\PY{o}{*} \PY{l+m+mi}{4} 
+\PY{n}{queue\PYZus{}history}\PY{p}{,} \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=}  \PY{n}{m\PYZus{}g\PYZus{}1\PYZus{}q}\PY{p}{(}\PY{n}{num\PYZus{}customers\PYZus{}obs}\PY{p}{,} \PY{n}{arrival\PYZus{}rate}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{exponential}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{departure\PYZus{}rate}\PY{p}{)}
+
+\PY{n}{rho} \PY{o}{=} \PY{n}{arrival\PYZus{}rate} \PY{o}{/} \PY{n}{departure\PYZus{}rate}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Empirical Mean State: }\PY{l+s+si}{\PYZob{}}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{queue\PYZus{}history}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZgt{} Analytical Mean State: }\PY{l+s+si}{\PYZob{}}\PY{n}{PolkChinMVformula}\PY{p}{(}\PY{n}{rho}\PY{p}{,}\PY{+w}{ }\PY{n}{arrival\PYZus{}rate}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{1}\PY{+w}{ }\PY{o}{/}\PY{+w}{ }\PY{p}{(}\PY{n}{departure\PYZus{}rate}\PY{+w}{ }\PY{o}{*}\PY{o}{*}\PY{+w}{ }\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Empirical Mean State: 1.2268
+-> Analytical Mean State: 1.1999999999999997
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{num\PYZus{}customers\PYZus{}obs} \PY{o}{=} \PY{l+m+mi}{10} \PY{o}{*}\PY{o}{*} \PY{l+m+mi}{4} 
+\PY{n}{queue\PYZus{}history}\PY{p}{,} \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=}  \PY{n}{m\PYZus{}g\PYZus{}1\PYZus{}q}\PY{p}{(}\PY{n}{num\PYZus{}customers\PYZus{}obs}\PY{p}{,} \PY{n}{arrival\PYZus{}rate}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{deterministic}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+m+mi}{1} \PY{o}{/} \PY{n}{departure\PYZus{}rate}\PY{p}{)}
+
+\PY{n}{rho} \PY{o}{=} \PY{n}{arrival\PYZus{}rate} \PY{o}{/} \PY{n}{departure\PYZus{}rate} 
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Empirical Mean State: }\PY{l+s+si}{\PYZob{}}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{queue\PYZus{}history}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZgt{} Analytical Mean State: }\PY{l+s+si}{\PYZob{}}\PY{n}{PolkChinMVformula}\PY{p}{(}\PY{n}{rho}\PY{p}{,}\PY{+w}{ }\PY{n}{arrival\PYZus{}rate}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{0}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Empirical Mean State: 0.863
+-> Analytical Mean State: 0.8727272727272727
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{num\PYZus{}customers\PYZus{}obs} \PY{o}{=} \PY{l+m+mi}{10} \PY{o}{*}\PY{o}{*} \PY{l+m+mi}{4} 
+\PY{n}{k}\PY{p}{,} \PY{n}{theta} \PY{o}{=} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.1}
+\PY{n}{queue\PYZus{}history}\PY{p}{,} \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=}  \PY{n}{m\PYZus{}g\PYZus{}1\PYZus{}q}\PY{p}{(}\PY{n}{num\PYZus{}customers\PYZus{}obs}\PY{p}{,} \PY{n}{arrival\PYZus{}rate}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gamma}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{p}{[}\PY{n}{k}\PY{p}{,} \PY{n}{theta}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{mean\PYZus{}time} \PY{o}{=} \PY{n}{k} \PY{o}{*} \PY{n}{theta}
+\PY{n}{var\PYZus{}time} \PY{o}{=} \PY{n}{k} \PY{o}{*} \PY{p}{(}\PY{n}{theta} \PY{o}{*}\PY{o}{*} \PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{rho} \PY{o}{=} \PY{n}{arrival\PYZus{}rate} \PY{o}{*} \PY{n}{mean\PYZus{}time} 
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Empirical Mean State: }\PY{l+s+si}{\PYZob{}}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{queue\PYZus{}history}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZgt{} Analytical Mean State: }\PY{l+s+si}{\PYZob{}}\PY{n}{PolkChinMVformula}\PY{p}{(}\PY{n}{rho}\PY{p}{,}\PY{+w}{ }\PY{n}{arrival\PYZus{}rate}\PY{p}{,}\PY{+w}{ }\PY{n}{var\PYZus{}time}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Empirical Mean State: 0.5102
+-> Analytical Mean State: 0.49285714285714294
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{38}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{num\PYZus{}customers\PYZus{}obs} \PY{o}{=} \PY{l+m+mi}{10} \PY{o}{*}\PY{o}{*} \PY{l+m+mi}{4} 
+\PY{n}{lowlim}\PY{p}{,} \PY{n}{uplim} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mf}{0.1}
+\PY{n}{queue\PYZus{}history}\PY{p}{,} \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=}  \PY{n}{m\PYZus{}g\PYZus{}1\PYZus{}q}\PY{p}{(}\PY{n}{num\PYZus{}customers\PYZus{}obs}\PY{p}{,} \PY{n}{arrival\PYZus{}rate}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{uniform}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{p}{[}\PY{n}{lowlim}\PY{p}{,} \PY{n}{uplim}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{mean\PYZus{}time} \PY{o}{=} \PY{p}{(}\PY{n}{lowlim} \PY{o}{+} \PY{n}{uplim}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{2}
+\PY{n}{var\PYZus{}time} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{uplim} \PY{o}{\PYZhy{}} \PY{n}{lowlim}\PY{p}{)} \PY{o}{*}\PY{o}{*} \PY{l+m+mi}{2}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{12}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Empirical Mean State: }\PY{l+s+si}{\PYZob{}}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{queue\PYZus{}history}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZgt{} Analytical Mean State: }\PY{l+s+si}{\PYZob{}}\PY{n}{PolkChinMVformula}\PY{p}{(}\PY{n}{rho}\PY{p}{,}\PY{+w}{ }\PY{n}{arrival\PYZus{}rate}\PY{p}{,}\PY{+w}{ }\PY{n}{var\PYZus{}time}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Empirical Mean State: 0.3848
+-> Analytical Mean State: 0.3857142857142858
+    \end{Verbatim}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
